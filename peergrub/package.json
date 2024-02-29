@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "css-blank-pseudo": "^6.0.1",
+    "postcss-color-functional-notation": "^6.0.5",
     "postcss-preset-env": "^9.3.0"
   }
 }
