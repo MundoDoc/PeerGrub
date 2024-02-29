@@ -1,0 +1,88 @@
+.navbar {
+    flex-wrap: nowrap !important;
+    text-align: center !important;
+    padding-top: 20px;
+    background-color: transparent !important;
+    color: #36454f !important;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.collapse {
+    text-align: center !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    height: 100% !important;
+}
+
+.navbar-brand {
+    font-family: cursive;
+    color: #36454f;
+}
+
+.navbar-toggler {
+    color: white !important;
+}
+
+.navbar-nav {
+    flex-direction: row !important;
+    width: 100% !important;
+    height: 50%;
+    justify-content: right;
+}
+
+.nav-item {
+    text-align: center !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding-left: 20px;
+}
+
+.container-fluid {
+    padding: 1px;
+    display: flex;
+    width: 100%;
+}
+
+.shop {
+    color: white;
+    display: flex;
+    width: 49vw !important;
+}
+
+.navUnique {
+    justify-content: right !important;
+}
+
+.nav {
+    width: 49vw !important;
+}
+
+.nav-link {
+    color: #36454f;
+}
+
+input[type=text] {
+    border-radius: 20px 20px 20px 20px;
+    border-style: solid;
+    border-width: 0.5px;
+    border-color: black;
+    padding: 6px;
+    margin-top: 8px;
+    margin-right: 16px;
+    font-size: 17px;
+}
+
+@media (min-width: 600px) {
+    .nav-left, .nav-right {
+        width: auto; /* Adjust width as needed for desktop */
+    }
+    .search-container {
+    }
+    input{
+        width: 100%;
+    }
+    /* Additional desktop-specific adjustments */
+}

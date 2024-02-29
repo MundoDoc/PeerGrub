@@ -1,0 +1,65 @@
+#slideshow-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  max-width: 1000px;
+  margin: auto;
+  perspective: 1000px; /* Adds perspective to the 3D transform */
+}
+
+.slide {
+  flex: 1 0 30%; /* Adjust based on your layout preference */
+  opacity: 0.9; /* Dim side images slightly */
+  transition: transform 0.5s ease, opacity 0.5s ease; /* Smooth transition for transform and opacity */
+}
+
+.slide.middle {
+  opacity: 1; /* Highlight the middle image */
+  flex: 40%;
+}
+
+.slide.right, .slide.left {
+  transform: scale(0.8); /* Slightly scale down left and right slides */
+}
+
+.slide.right {
+  transform: rotateX(10deg) rotateY(-20deg) scale(0.9); /* Rotate right slide for 3D effect */
+}
+
+.slide.left {
+  transform: rotateX(10deg) rotateY(20deg) scale(0.9); /* Rotate left slide for 3D effect */
+}
+
+.slide:hover {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  opacity: 1;
+  transform: scale(1.1); /* Slightly scale up on hover */
+}
+
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  user-select: none;
+  z-index: 100;
+}
+
+.next {
+  right: 0;
+}
+
+.prev {
+  left: 0;
+}
+
+.imgStyle{
+  border-radius: 10px;
+}
