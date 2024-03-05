@@ -4,6 +4,7 @@ import './App.css';
 import Nav from "./Components/Navigation";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
+import ShoppingCart from "./Pages/ShoppingCart";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login/>} />
+            <Route path="/shoppingcart" element={<ShoppingCart/>} />
           </Routes>
         </div>
         {/* <Footer /> */}

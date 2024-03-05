@@ -31,7 +31,7 @@ function Navigation() {
                             <a className="nav-link" href="/login">Login</a>
                         </li>
                         <li className="nav-item navUnique">
-                            <a className="nav-link" href="/cart"><img src={Cart} alt="Cart" style={{ width: '60px' }} /></a>
+                            <a className="nav-link" href="/shoppingcart"><img src={Cart} alt="Cart" style={{ width: '60px' }} /></a>
                         </li>
                     </ul>
                 </div>
