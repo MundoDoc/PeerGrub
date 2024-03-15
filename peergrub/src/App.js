@@ -6,6 +6,8 @@ import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 import ShoppingCart from "./Pages/ShoppingCart";
 import SignUp from "./Pages/SignUp";
+import About from "./Pages/About";
+import Profile from "./Pages/Profile";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
             <Route path="/login" element={<Login/>} />
             <Route path="/shoppingcart" element={<ShoppingCart/>} />
             <Route path="/signup" element={<SignUp/>}/>
+            <Route path="/about" element={<About />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </div>
         {/* <Footer /> */}
