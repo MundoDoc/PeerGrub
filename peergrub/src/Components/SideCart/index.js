@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './index.css';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
@@ -21,7 +22,7 @@ export default function SideCart() {
   };
 
   const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+    <Box className="sideBox" sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
         {['First Restaurant', 'Second Restaurant'].map((text, index) => (
           <ListItem key={text} disablePadding>

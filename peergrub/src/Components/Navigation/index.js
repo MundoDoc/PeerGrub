@@ -1,31 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import './index.css';
 import Logo from '../../Assets/Logo.png';
 import SideCart from '../SideCart';
+import MenuIcon from '@mui/icons-material/Menu';
 
 function Navigation() {
+    const [isCollapsed, setIsCollapsed] = useState(true);
+    let navigate = useNavigate();
+
+    const toggleCollapse = () => setIsCollapsed(!isCollapsed);
 
     return (
-        <nav className="navbar navbar-expand-md bg-body-tertiary">
-            <div className="container-fluid">
-                {/* Group left-aligned items */}
-                <div className="nav-left">
+        <div>
+            <nav className="navbar navbar-expand-md bg-body-tertiary">
+                <div className="container-fluid">
+                    {/* Logo */}
                     <a className="navbar-brand" href="/"><img src={Logo} alt="Logo" style={{ width: '50px' }} />Peer Grub</a>
+                    
+                    {/* Links and SideCart */}
+                    <div className={`${isCollapsed ? 'collapsed' : ''}`}>
+                        <ul className="navbar-nav">
+                            {/* Collapsible items */}
+                            <div className={`collapse-content ${isCollapsed ? 'hide' : 'show'}`}>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="/login">Login</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="/about">About</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="/profile">Profile</a>
+                                </li>
+                            </div>
+                                            {/* Toggler Button */}
+                            <button className="navbar-toggler" type="button" onClick={toggleCollapse}>
+                                <MenuIcon />
+                            </button>
+                            {/* Always visible item */}
+                            <button className="nav-item">
+                                <a><SideCart /></a>
+                            </button>
+                        </ul>
+                    </div>
                 </div>
-                
-                {/* Group right-aligned items */}
-                <div className="nav-right">
-                    <ul className="navbar-nav">
-                        <li className="nav-item navUnique">
-                            <a className="nav-link" href="/login">Login</a>
-                        </li>
-                        <li className="nav-item navUnique">
-                            <SideCart />
-                        </li>
-                    </ul>
-                </div>
+            </nav>
+            <div className={`newCollapse ${isCollapsed ? 'hide' : 'show'}`}>
+                <ul className="navbar-nav newNav">
+                    <button className="nav-item navUnique navBottom" onClick={() => navigate('/login')}>
+                        <a className="nav-link">Login</a>
+                    </button>
+                    <button className="nav-item navUnique navBottom" onClick={() => navigate('/about')}>
+                        <a className="nav-link">About</a>
+                    </button>
+                    <button className="nav-item navUnique navBottom" onClick={() => navigate('/profile')}>
+                        <a className="nav-link">Profile</a>
+                    </button>
+                </ul>
             </div>
-        </nav>
+            <div className={`opacBack ${isCollapsed ? 'hide' : 'show'}`}></div>
+        </div>
     );
 }
 

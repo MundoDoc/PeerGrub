@@ -1,19 +1,15 @@
+/* General Navbar Styles */
 .navbar {
-    flex-wrap: nowrap !important;
-    text-align: center !important;
+    text-align: center;
     padding-top: 20px;
     background-color: transparent !important;
-    color: #36454f !important;
-    padding-left: 10%;
-    padding-right: 10%;
-}
-
-.collapse {
-    text-align: center !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    height: 100% !important;
+    color: #36454f;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 5%;
+    padding-right: 5%;
+    z-index: 1001;
 }
 
 .navbar-brand {
@@ -22,50 +18,102 @@
 }
 
 .navbar-toggler {
-    color: white !important;
-}
-
-.navbar-nav {
-    flex-direction: row !important;
-    width: 100% !important;
-    height: 50%;
-    justify-content: right;
+    display: none; /* Initially hidden */
+    cursor: pointer;
+    color: #36454f; /* Adjust color as needed */
 }
 
 .nav-item {
-    text-align: center !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    padding-left: 20px;
-}
-
-.container-fluid {
-    padding: 1px;
     display: flex;
-    width: 100%;
-}
-
-.shop {
-    color: white;
-    display: flex;
-    width: 49vw !important;
-}
-
-.navUnique {
-    justify-content: right !important;
-}
-
-.nav {
-    width: 49vw !important;
+    flex-wrap: wrap;
+    order:1;
+    padding: 0 15px;
+    background-color: transparent;
+    border: none;
 }
 
 .nav-link {
     color: #36454f;
+    text-decoration: none;
 }
 
+/* Collapsible Content Styles */
+.collapse-content {
+    display: flex;
+    align-items: center;
+}
+.newCollapse {
+    display: none;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+
+    .collapse-content.hide {
+        display: none !important;
+    }
+
+    .navbar-toggler {
+        display: flex; /* Show toggler button */
+    }
+
+    .navbar-nav {
+        text-align: center;
+        align-items: center;
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .collapse-content {
+        width: 100%;
+        text-align: center;
+        flex-direction: column;
+    }
+
+    .collapse-content.show {
+        order: 2;
+        width: 100%;
+        display: none;
+        z-index: 1000;
+    }
+
+    .newCollapse.show {
+        position: absolute;
+        border-radius: 20px;
+        top: 90px;
+        width: 100%;
+        display:flex;
+        flex-direction: row;
+        background-color: white;
+        z-index: 1000;
+        border: 0.5px solid #36454f;
+    }
+
+    .newNav{
+        flex-direction: column;
+        border-radius: 5px;
+        width: 100% !important;
+    }
+
+    .navUnique{
+        width: 100%;
+    }
+
+    .navBottom{
+        border-bottom: 0.5px solid black;
+    }
+    .navTop{
+        border-top: 0.5px solid black;
+    }
+
+}
+
+/* SideCart Specific Styles */
+/* Add any specific styles for your SideCart component here. If it's primarily controlled via its own CSS or JavaScript, you might not need much here. */
+
+/* Simplified Input Style (if still required) */
 input[type=text] {
-    border-radius: 20px 20px 20px 20px;
+    border-radius: 20px;
     border-style: solid;
     border-width: 0.5px;
     border-color: black;
@@ -73,16 +121,6 @@ input[type=text] {
     margin-top: 8px;
     margin-right: 16px;
     font-size: 17px;
+    width: 100%; /* Ensure full-width inputs on smaller screens */
 }
 
-@media (min-width: 600px) {
-    .nav-left, .nav-right {
-        width: auto; /* Adjust width as needed for desktop */
-    }
-    .search-container {
-    }
-    input{
-        width: 100%;
-    }
-    /* Additional desktop-specific adjustments */
-}
