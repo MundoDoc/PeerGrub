@@ -4,7 +4,6 @@ import "./index.css";
 const SignUpPage = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [csudhID, setCSUDHID] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -14,10 +13,6 @@ const SignUpPage = () => {
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
-  };
-
-  const handleCSUDHIDChange = (event) => {
-    setCSUDHID(event.target.value);
   };
 
   const handlePasswordChange = (event) => {
@@ -30,24 +25,14 @@ const SignUpPage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Add your sign-up logic here
-    console.log("Username:", username);
-    console.log("Email:", email);
-    console.log("CSUDH ID#:", csudhID);
-    console.log("Password:", password);
-    console.log("Confirm Password:", confirmPassword);
-    // Reset the form fields after submission
-    setUsername("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
+    // Handle form submission
   };
 
   return (
     <div className="signup-container">
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="form-group">
           <label htmlFor="username">Username:</label>
           <input
             type="text"
@@ -57,7 +42,7 @@ const SignUpPage = () => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="email">Email:</label>
           <input
             type="email"
@@ -67,17 +52,7 @@ const SignUpPage = () => {
             required
           />
         </div>
-        <div>
-          <label htmlFor="csudhID">CSUDH ID#:</label>
-          <input
-            type="csudhID"
-            id="csudhID"
-            value={csudhID}
-            onChange={handleCSUDHIDChange}
-            required
-          />
-        </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="password">Password:</label>
           <input
             type="password"
@@ -87,7 +62,7 @@ const SignUpPage = () => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="confirmPassword">Confirm Password:</label>
           <input
             type="password"
