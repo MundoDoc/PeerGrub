@@ -24,10 +24,13 @@ function Navigation() {
                             {/* Collapsible items */}
                             <div className={`collapse-content ${isCollapsed ? 'hide' : 'show'}`}>
                                 <li className="nav-item">
-                                    <a className="nav-link" href="/login">Login</a>
+                                    <a className="nav-link" href="/listings">Listings</a>
                                 </li>
                                 <li className="nav-item">
                                     <a className="nav-link" href="/about">About</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="/login">Login/Signup</a>
                                 </li>
                                 <li className="nav-item">
                                     <a className="nav-link" href="/profile">Profile</a>
@@ -47,11 +50,14 @@ function Navigation() {
             </nav>
             <div className={`newCollapse ${isCollapsed ? 'hide' : 'show'}`}>
                 <ul className="navbar-nav newNav">
-                    <button className="nav-item navUnique navBottom" onClick={() => navigate('/login')}>
-                        <a className="nav-link">Login</a>
+                    <button className="nav-item navUnique navBottom" onClick={() => navigate('/profile')}>
+                        <a className="nav-link">Listings</a>
                     </button>
                     <button className="nav-item navUnique navBottom" onClick={() => navigate('/about')}>
                         <a className="nav-link">About</a>
+                    </button>
+                    <button className="nav-item navUnique navBottom" onClick={() => navigate('/login')}>
+                        <a className="nav-link">Login/Signup</a>
                     </button>
                     <button className="nav-item navUnique navBottom" onClick={() => navigate('/profile')}>
                         <a className="nav-link">Profile</a>
