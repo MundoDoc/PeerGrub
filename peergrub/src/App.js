@@ -9,6 +9,7 @@ import SignUp from "./Pages/SignUp";
 import About from "./Pages/About";
 import Profile from "./Pages/Profile";
 import NewListing from "./Pages/NewListing";
+import Footer from "./Components/Footer";
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
             <Route path="/listings" element={<NewListing />} />
           </Routes>
         </div>
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </BrowserRouter>
   );

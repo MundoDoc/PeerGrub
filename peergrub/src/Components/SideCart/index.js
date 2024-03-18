@@ -54,7 +54,7 @@ export default function SideCart() {
 
   return (
     <div>
-        <a className="nav-link" onClick={toggleDrawer(true)}><img src={Cart} alt="Cart" style={{ width: '60px' }} /></a>
+        <a className="nav-side" onClick={toggleDrawer(true)}><img src={Cart} alt="Cart" style={{ width: '60px' }} /></a>
         <Drawer open={open} anchor="right" onClose={toggleDrawer(false)}>
             {DrawerList}
         </Drawer>

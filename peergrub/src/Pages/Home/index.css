@@ -24,9 +24,22 @@
 
 .imageText{
     position: absolute; /* Takes h1 out of the normal document flow */
-    top: 50%; /* Positions the top of h1 halfway down the parent container */
+    top: 275px; /* Positions the top of h1 halfway down the parent container */
     left: 50%; /* Positions the left of h1 halfway across the parent container */
     transform: translate(-50%, -50%); /* Adjusts the position of h1 to be centered over the image */
     color: white; /* Adjust the color as needed */
+    z-index: 100;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: Adds a shadow for better readability */
+    font-family: "Monaco";
+  }
+
+  .spotLight{
+    padding-top: 15px;
+    border-top: 1px solid black;
+    text-align: center;
+  }
+
+  .spotlightText{
+    padding-bottom: 15px;
+    font-family: "Monaco";
   }

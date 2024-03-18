@@ -1,0 +1,22 @@
+.footDiv{
+    bottom: 0;
+    min-height: 260px;
+    background-color: #fff;
+}
+
+.eachBox{
+    width: 30%;
+    padding-bottom: 15px;
+}
+
+.paperStyle{
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+
+    .eachBox{
+        width: 50%;
+    }
+
+}

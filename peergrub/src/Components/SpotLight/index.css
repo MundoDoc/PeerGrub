@@ -1,0 +1,39 @@
+.spotStyle{
+    opacity: 1;
+    height: auto;
+    max-width: 70%;
+    border-radius: 50%;
+    border: 5px solid white;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 15px;
+}
+
+.gridStyle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    height: 100%;
+    padding-top: 10px;
+    border: 10px solid white;
+    background-color: white;
+}
+
+.spotlightDiv{
+    padding-right: 8%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.picGrid{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

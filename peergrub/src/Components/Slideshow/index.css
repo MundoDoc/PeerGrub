@@ -6,12 +6,16 @@
   max-width: 1000px;
   margin: auto;
   perspective: 1000px; /* Adds perspective to the 3D transform */
+  padding-bottom: 30px;
 }
 
 .slide {
   flex: 1 0 30%; /* Adjust based on your layout preference */
   opacity: 0.9; /* Dim side images slightly */
   transition: transform 0.5s ease, opacity 0.5s ease; /* Smooth transition for transform and opacity */
+  background-color: white;
+  padding-bottom: 20px;
+  border: 12px solid white;
 }
 
 .slide.middle {
@@ -24,7 +28,7 @@
 }
 
 .slide.right {
-  transform: rotateX(10deg) rotateY(-20deg) scale(0.9); /* Rotate right slide for 3D effect */
+  transform: rotateX(10deg) rotateY(-20deg) scale(0.9); /*Rotate right slide for 3D effect */
 }
 
 .slide.left {
