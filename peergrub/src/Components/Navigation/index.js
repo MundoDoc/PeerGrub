@@ -69,21 +69,21 @@ function Navigation() {
             </nav>
             <div className={`newCollapse ${isCollapsed ? 'hide' : 'show'}`}>
                 <ul className="navbar-nav newNav">
-                    <button className="nav-item navUnique navBottom" onClick={() => navigate('/profile')}>
+                    <button className="nav-item navUnique navBottom" onClick={() =>{ setIsCollapsed(true); navigate('/listings')}}>
                         <a className="nav-link">Listings</a>
                     </button>
-                    <button className="nav-item navUnique navBottom" onClick={() => navigate('/about')}>
+                    <button className="nav-item navUnique navBottom" onClick={() =>{ setIsCollapsed(true); navigate('/about')}}>
                         <a className="nav-link">About</a>
                     </button>
-                    <button className="nav-item navUnique navBottom" onClick={() => navigate('/login')}>
+                    <button className="nav-item navUnique navBottom" onClick={() =>{ setIsCollapsed(true); navigate('/login')}}>
                         <a className="nav-link">Login/Signup</a>
                     </button>
-                    <button className="nav-item navUnique navBottom" onClick={() => navigate('/profile')}>
+                    <button className="nav-item navUnique navBottom" onClick={() =>{ setIsCollapsed(true); navigate('/profile')}}>
                         <a className="nav-link">Profile</a>
                     </button>
                 </ul>
             </div>
-            <div className={`opacBack ${isCollapsed ? 'hide' : 'show'}`}></div>
+            <div className={`opacBack ${isCollapsed ? 'hide' : 'show'}`} onClick={() =>{ setIsCollapsed(true) }}></div>
         </div>
     );
 }
