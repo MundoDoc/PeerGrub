@@ -1,0 +1,63 @@
+.loginDiv {
+  width: 300px;
+  margin: 100px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.loginDiv h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.loginDiv form {
+  display: flex;
+  flex-direction: column;
+}
+
+.loginDiv label {
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.loginDiv input[type="text"],
+.loginDiv input[type="password"] {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.loginDiv button[type="submit"] {
+  padding: 10px 20px;
+  margin-top: 10px;
+  background-color: #e94a23;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loginDiv button[type="submit"]:hover {
+  background-color: #aa381b;
+}
+
+.loginDiv button[type="reset"] {
+  font-size: smaller;
+  padding: 5px 10px;
+  margin-top: 5px;
+  background-color: #e94a23;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loginDiv button[type="reset"]:hover {
+  background-color: #aa381b;
+}

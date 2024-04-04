@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { Route, Routes, BrowserRouter, Navigate } from "react-router-dom";
 import "./App.css";
 import Nav from "./Components/Navigation";
 import Home from "./Pages/Home";
@@ -10,6 +10,18 @@ import About from "./Pages/About";
 import Profile from "./Pages/Profile";
 import NewListing from "./Pages/NewListing";
 import Footer from "./Components/Footer";
+import ProtectedRoute from "./Components/ProtectedRoute";
+
+
+function Logout() {
+  localStorage.clear();
+  return <Navigate to="/login" />;
+}
+
+function RegisterAndLogout(){
+  localStorage.clear()
+  return <SignUp />
+}
 
 function App() {
   return (
@@ -21,11 +33,17 @@ function App() {
           {/*Routes are to go from page to page*/}
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<RegisterAndLogout />} />
             <Route path="/shoppingcart" element={<ShoppingCart />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route path="/profile" 
+              element={
+                <ProtectedRoute>  
+                  <Profile />
+                </ProtectedRoute>
+              }                       
+            />
+            <Route path="/login" element={<Login />} />
             <Route path="/about" element={<About />} />
-            <Route path="/profile" element={<Profile />} />
             <Route path="/listings" element={<NewListing />} />
           </Routes>
         </div>

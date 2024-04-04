@@ -21,7 +21,7 @@ function Navigation() {
                 navigate('/about');
                 break;
             case 2:
-                navigate('/login');
+                navigate('/signup');
                 break;
             case 3:
                 navigate('/profile');
@@ -51,7 +51,7 @@ function Navigation() {
                                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                                     <Tab label="Listings" />
                                     <Tab label="About" />
-                                    <Tab label="Login/Signup" />
+                                    <Tab label="Signup" />
                                     <Tab label="Profile" />
                                 </Tabs>
                             </div>
