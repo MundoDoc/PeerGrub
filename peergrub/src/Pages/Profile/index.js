@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./index.css";
 import Macarons from "../../Assets/Macarons.JPG";
 import ChickenParm from "../../Assets/ChickenParm.JPG";
@@ -14,6 +15,7 @@ const Profile = () => {
 
   // State to control whether editing mode is enabled
   const [editing, setEditing] = useState(false);
+  const navigate = useNavigate();
 
   // Handler functions to update name and bio
   const handleNameChange = (e) => {
@@ -33,6 +35,10 @@ const Profile = () => {
     setEditing(!editing);
   };
 
+  const logMeOut = () => {
+    navigate("/logout");
+  }
+
   // JSX for profile page
   return (
     <div className="profile">
@@ -41,6 +47,7 @@ const Profile = () => {
           {editing ? "Save" : "Edit"}
         </button>
         <button className="add-dish-button">Add New Dish</button>
+        <button className="add-dish-button" onClick={logMeOut}>Logout</button>
       </div>
       <div className="profile-info">
         <div className="profile-picture">

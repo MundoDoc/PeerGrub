@@ -21,17 +21,19 @@ function Navigation() {
                 navigate('/about');
                 break;
             case 2:
-                navigate('/signup');
+                if(localStorage.getItem('access')===null){
+                    navigate('/login');
+                }else{
+                    navigate('/profile');
+                }
                 break;
             case 3:
-                navigate('/profile');
-                break;
-            case 4:
                 navigate('/');
                 break;
             default:
                 navigate('/');
         }
+
     };
 
     const toggleCollapse = () => setIsCollapsed(!isCollapsed);
@@ -51,8 +53,12 @@ function Navigation() {
                                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                                     <Tab label="Listings" />
                                     <Tab label="About" />
-                                    <Tab label="Signup" />
-                                    <Tab label="Profile" />
+                                    {localStorage.getItem('access') === null && (
+                                        <Tab label="Signup/Login" />
+                                    )}
+                                    {localStorage.getItem('access')!== null && (
+                                        <Tab label="Profile" />
+                                    )}
                                 </Tabs>
                             </div>
                                             {/* Toggler Button */}
@@ -67,6 +73,11 @@ function Navigation() {
                     </div>
                 </div>
             </nav>
+            {/* {localStorage.getItem('access') != null && (
+                <div id="confPassword">
+                <h1>Hello</h1>
+                </div>
+                )} */}
             <div className={`newCollapse ${isCollapsed ? 'hide' : 'show'}`}>
                 <ul className="navbar-nav newNav">
                     <button className="nav-item navUnique navBottom" onClick={() =>{ setIsCollapsed(true); navigate('/listings')}}>
@@ -75,12 +86,16 @@ function Navigation() {
                     <button className="nav-item navUnique navBottom" onClick={() =>{ setIsCollapsed(true); navigate('/about')}}>
                         <a className="nav-link">About</a>
                     </button>
-                    <button className="nav-item navUnique navBottom" onClick={() =>{ setIsCollapsed(true); navigate('/login')}}>
+                    {localStorage.getItem('access') === null && (
+                        <button className="nav-item navUnique navBottom" onClick={() =>{ setIsCollapsed(true); navigate('/login')}}>
                         <a className="nav-link">Login/Signup</a>
                     </button>
-                    <button className="nav-item navUnique navBottom" onClick={() =>{ setIsCollapsed(true); navigate('/profile')}}>
+                    )}
+                    {localStorage!== null && (
+                        <button className="nav-item navUnique navBottom" onClick={() =>{ setIsCollapsed(true); navigate('/profile')}}>
                         <a className="nav-link">Profile</a>
                     </button>
+                    )}
                 </ul>
             </div>
             <div className={`opacBack ${isCollapsed ? 'hide' : 'show'}`} onClick={() =>{ setIsCollapsed(true) }}></div>

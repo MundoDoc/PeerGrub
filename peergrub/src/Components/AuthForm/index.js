@@ -31,6 +31,7 @@ export default function AuthForm({ route, method }) {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
                 navigate("/")
+                window.location.reload();
             } else {
                 navigate("/login")
             }
@@ -79,7 +80,9 @@ export default function AuthForm({ route, method }) {
           </div>
         )}
         <button type="submit">{header}</button>
-        <a href="/signup">Don't Have an Account? Sign Up</a>
+        {method === "login" && (
+          <a href="/signup">Don't Have an Account? Sign Up</a>
+        )}
       </form>
     </div>
   );
