@@ -28,7 +28,7 @@ class Item(models.Model):
     PEANUTS = "P"
     WHEAT = "W"
     NONE = "NO"
-
+    #t
     ALLERGEN_CHOICES = [
      (MILK, "Milk"),
      (EGGS, "Eggs"), 
