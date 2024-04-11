@@ -21,4 +21,4 @@ class ProfileSerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = ('itemName','price','itemDescr','itemIngredients','allergen_choice')
+        fields = ('item_Name','price','calories','item_Descr','item_Ingredients','allergen_choices')

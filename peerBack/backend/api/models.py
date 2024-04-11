@@ -15,11 +15,12 @@ class Profile(models.Model):
         return self.first_name +'' + self.last_name
     
 class Item(models.Model):
-    itemName = models.CharField(max_length=40)
-    itemImage = models.ImageField()
+    item_Name = models.CharField(max_length=40)
+    item_Image = models.ImageField()
     price = models.FloatField()
-    itemDescr = models.TextField(max_length=200,null=True)
-    itemIngredients = models.TextField(max_length=200,null=True)
+    calories = models.CharField(max_length=10)
+    item_Descr = models.TextField(max_length=200,null=True)
+    item_Ingredients = models.TextField(max_length=200,null=True)
     MILK = "M"
     EGGS = "E"
     FISH = "F"
@@ -28,7 +29,7 @@ class Item(models.Model):
     PEANUTS = "P"
     WHEAT = "W"
     NONE = "NO"
-    
+
     ALLERGEN_CHOICES = [
      (MILK, "Milk"),
      (EGGS, "Eggs"), 
@@ -43,3 +44,6 @@ class Item(models.Model):
 
     class Meta:
         verbose_name = "Item Creation"
+
+    def __str__(self):
+        return self.item_Name
