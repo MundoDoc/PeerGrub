@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from taggit.managers import TaggableManager
 
 # Create your models here.
 
@@ -17,6 +18,7 @@ class Profile(models.Model):
 class Listing(models.Model):
     Listing_Title = models.CharField(max_length=40)
     Listing_Image = models.ImageField()
+    Listing_Tags = TaggableManager()
     Listing_Cost = models.FloatField()
     Listing_Calories = models.CharField(max_length=10,null=True)
     Listing_Descr = models.TextField(max_length=200,null=True)
