@@ -36,16 +36,16 @@
   }
 }
 
-html, body{
+html,
+body {
   height: 100%;
   margin: 0;
   width: 100vw;
   padding-bottom: 30px;
-  background-color: #FFE4C4;
-  
+  background-color: #ffe4c4;
 }
 
-.midBody{
+.midBody {
   min-height: 70vh;
   padding: 10px;
   padding-top: 30px;

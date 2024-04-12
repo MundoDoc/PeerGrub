@@ -8,19 +8,19 @@ import ShoppingCart from "./Pages/ShoppingCart";
 import SignUp from "./Pages/SignUp";
 import About from "./Pages/About";
 import Profile from "./Pages/Profile";
+import Listings from "./Pages/Listings";
 import NewListing from "./Pages/NewListing";
 import Footer from "./Components/Footer";
 import ProtectedRoute from "./Components/ProtectedRoute";
-
 
 function Logout() {
   localStorage.clear();
   return <Navigate to="/" />;
 }
 
-function RegisterAndLogout(){
-  localStorage.clear()
-  return <SignUp />
+function RegisterAndLogout() {
+  localStorage.clear();
+  return <SignUp />;
 }
 
 function App() {
@@ -35,16 +35,18 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<RegisterAndLogout />} />
             <Route path="/shoppingcart" element={<ShoppingCart />} />
-            <Route path="/profile" 
+            <Route
+              path="/profile"
               element={
-                <ProtectedRoute>  
+                <ProtectedRoute>
                   <Profile />
                 </ProtectedRoute>
-              }                       
+              }
             />
             <Route path="/login" element={<Login />} />
             <Route path="/about" element={<About />} />
-            <Route path="/listings" element={<NewListing />} />
+            <Route path="/listings" element={<Listings />} />
+            <Route path="/createlisting" element={<NewListing />} />
             <Route path="/logout" element={<Logout />} />
           </Routes>
         </div>

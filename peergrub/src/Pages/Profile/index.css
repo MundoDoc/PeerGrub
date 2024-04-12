@@ -59,6 +59,7 @@
   padding: 5px 10px;
   font-size: 1rem;
   background-color: #e94a23;
+  background-image: linear-gradient(1deg, #aa381b00, #e6d1494d 99%);
   color: #fff;
   border: none;
   border-radius: 10px;
@@ -68,38 +69,4 @@
 .edit-button:hover,
 .add-dish-button:hover {
   background-color: #aa381b;
-}
-
-.item-listing {
-  padding-top: 10px;
-  /* box-shadow: inset 0 7px 9px -7px rgba(0, 0, 0, 0.4); */
-  display: flex;
-  flex-wrap: wrap; /* Allows items to wrap to the next row if needed */
-  gap: 20px;
-}
-
-.item {
-  flex: 1; /* Each item takes equal space */
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px;
-  max-width: 300px; /* Limit the maximum width of each item */
-}
-
-.item img {
-  width: 100%;
-  border-radius: 5px;
-}
-
-.item h2 {
-  margin-top: 10px;
-  font-size: 1.2rem;
-}
-
-.item p {
-  margin: 5px 0;
-}
-
-.item p:last-child {
-  font-weight: bold;
 }

@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
-import Macarons from "../../Assets/Macarons.JPG";
-import ChickenParm from "../../Assets/ChickenParm.JPG";
-import Raviolis from "../../Assets/Raviolis.JPG";
+import ItemListings from "../../Components/ItemListings";
 
 const Profile = () => {
   // Initial state for name and bio
@@ -37,9 +35,8 @@ const Profile = () => {
 
   const logMeOut = () => {
     navigate("/logout");
-  }
+  };
 
-  // JSX for profile page
   return (
     <div className="profile">
       <div className="edit-button-container">
@@ -47,7 +44,9 @@ const Profile = () => {
           {editing ? "Save" : "Edit"}
         </button>
         <button className="add-dish-button">Add New Dish</button>
-        <button className="add-dish-button" onClick={logMeOut}>Logout</button>
+        <button className="add-dish-button" onClick={logMeOut}>
+          Logout
+        </button>
       </div>
       <div className="profile-info">
         <div className="profile-picture">
@@ -85,26 +84,7 @@ const Profile = () => {
           )}
         </div>
       </div>
-      <div class="item-listing">
-        <div class="item">
-          <img src={ChickenParm} alt="Placeholder Image" />
-          <h2>Dish 1</h2>
-          <p>Description of Dish 1</p>
-          <p>Price: $10</p>
-        </div>
-        <div class="item">
-          <img src={Macarons} alt="Placeholder Image" />
-          <h2>Dish 2</h2>
-          <p>Description of Dish 2</p>
-          <p>Price: $12</p>
-        </div>
-        <div class="item">
-          <img src={Raviolis} alt="Placeholder Image" />
-          <h2>Dish 3</h2>
-          <p>Description of Dish 3</p>
-          <p>Price: $8</p>
-        </div>
-      </div>
+      <ItemListings />
     </div>
   );
 };
