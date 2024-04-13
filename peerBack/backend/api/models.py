@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from taggit.managers import TaggableManager
 
 # Create your models here.
 
@@ -14,36 +15,35 @@ class Profile(models.Model):
     def __str__(self):
         return self.first_name +'' + self.last_name
     
-class Item(models.Model):
-    item_Name = models.CharField(max_length=40)
-    item_Image = models.ImageField()
-    price = models.FloatField()
-    calories = models.CharField(max_length=10)
-    item_Descr = models.TextField(max_length=200,null=True)
-    item_Ingredients = models.TextField(max_length=200,null=True)
-    MILK = "M"
+class Listing(models.Model):
+    Listing_Title = models.CharField(max_length=40)
+    Listing_Image = models.ImageField()
+    Listing_Tags = TaggableManager()
+    Listing_Cost = models.FloatField()
+    Listing_Calories = models.CharField(max_length=10,null=True)
+    Listing_Descr = models.TextField(max_length=200,null=True)
+    Listing_Ingredients = models.TextField(max_length=200,null=True)
+    DIARY = "D"
     EGGS = "E"
-    FISH = "F"
-    TREENUTS = "TN"
-    SOYBEANS = "SB"
-    PEANUTS = "P"
-    WHEAT = "W"
+    GLUTEN = "G"
+    NUTS = "N"
+    SOY = "S"
+    OTHER = "OTH"
     NONE = "NO"
 
     ALLERGEN_CHOICES = [
-     (MILK, "Milk"),
+     (DIARY, "Dairy"),
      (EGGS, "Eggs"), 
-     (FISH, "Fish"),
-     (TREENUTS, "Tree Nuts"),
-     (SOYBEANS,"Soybeans"),
-     (PEANUTS,"Peanuts"),
-     (WHEAT,"Wheat"),
-     (NONE,"None"),
+     (GLUTEN, "Gluten"),
+     (NUTS, "Nuts"),
+     (SOY,"Soy"),
+     (OTHER,"Other"),
+     (NONE,"None")
     ]
-    allergen_choices = models.CharField(max_length=2,choices=ALLERGEN_CHOICES,default=NONE)
+    allergen_choices = models.CharField(max_length=6,choices=ALLERGEN_CHOICES,default=NONE)
 
     class Meta:
-        verbose_name = "Item Creation"
+        verbose_name = "Listing Creation"
 
     def __str__(self):
-        return self.item_Name
+        return self.Listing_Title
