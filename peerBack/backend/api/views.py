@@ -5,6 +5,8 @@ from .serializers import UserSerializer, ProfileSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Profile
 
+from .forms import ListingForm, ProfileForm
+
 # Create your views here.
 
 class NewProfileCreate(generics.ListCreateAPIView):
