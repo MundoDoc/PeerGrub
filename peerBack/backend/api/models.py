@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from taggit.managers import TaggableManager
+from taggit.managers import TaggableManager 
+# pip install django-taggit in terminal to install TaggableManager
+# if there is a package error and add "taggit" in INSTALLED_APPS at settings.py
 
 # Create your models here.
 
@@ -18,26 +20,22 @@ class Profile(models.Model):
 class Listing(models.Model):
     Listing_Title = models.CharField(max_length=40)
     Listing_Image = models.ImageField()
+    # For each instance, we display field1, field2, and the associated tags 
+    field_1 = models.CharField(max_length=50,default=True)
+    field_2 = models.CharField(max_length=50,default=True)
     Listing_Tags = TaggableManager()
     Listing_Cost = models.FloatField()
     Listing_Calories = models.CharField(max_length=10,null=True)
     Listing_Descr = models.TextField(max_length=200,null=True)
     Listing_Ingredients = models.TextField(max_length=200,null=True)
-    DIARY = "D"
-    EGGS = "E"
-    GLUTEN = "G"
-    NUTS = "N"
-    SOY = "S"
-    OTHER = "OTH"
-    NONE = "NO"
-
+    NONE = "None"
     ALLERGEN_CHOICES = [
-     (DIARY, "Dairy"),
-     (EGGS, "Eggs"), 
-     (GLUTEN, "Gluten"),
-     (NUTS, "Nuts"),
-     (SOY,"Soy"),
-     (OTHER,"Other"),
+     ("Dairy", "Dairy"),
+     ("Eggs", "Eggs"), 
+     ("Gluten", "Gluten"),
+     ("Nuts", "Nuts"),
+     ("Soy","Soy"),
+     ("Other","Other"),
      (NONE,"None")
     ]
     allergen_choices = models.CharField(max_length=6,choices=ALLERGEN_CHOICES,default=NONE)
