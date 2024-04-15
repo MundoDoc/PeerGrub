@@ -35,6 +35,7 @@ const Profile = () => {
 
   const logMeOut = () => {
     navigate("/logout");
+    window.location.reload();
   };
 
   const createNewListing = () => {
