@@ -12,6 +12,7 @@ import Listings from "./Pages/Listings";
 import NewListing from "./Pages/NewListing";
 import Footer from "./Components/Footer";
 import ProtectedRoute from "./Components/ProtectedRoute";
+import NewListingForm from "./Pages/NewListing";
 
 function Logout() {
   localStorage.clear();
@@ -48,6 +49,7 @@ function App() {
             <Route path="/listings" element={<Listings />} />
             <Route path="/createlisting" element={<NewListing />} />
             <Route path="/logout" element={<Logout />} />
+            <Route path="/newlistingform" element={<NewListingForm />} />
           </Routes>
         </div>
         <Footer />

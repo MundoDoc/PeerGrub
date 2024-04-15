@@ -37,13 +37,17 @@ const Profile = () => {
     navigate("/logout");
   };
 
+  const createNewListing = () => {
+    navigate("/newlistingform");
+  };
+
   return (
     <div className="profile">
       <div className="edit-button-container">
         <button className="edit-button" onClick={toggleEditing}>
           {editing ? "Save" : "Edit"}
         </button>
-        <button className="add-dish-button">Add New Dish</button>
+        <button className="add-dish-button" onClick={createNewListing}>Add New Dish</button>
         <button className="add-dish-button" onClick={logMeOut}>
           Logout
         </button>
