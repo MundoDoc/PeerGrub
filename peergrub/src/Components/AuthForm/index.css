@@ -61,3 +61,8 @@
 .loginDiv button[type="reset"]:hover {
   background-color: #aa381b;
 }
+
+.wrongPasswordText{
+  color: red;
+  font-size: 10px;
+}

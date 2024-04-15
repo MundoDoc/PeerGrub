@@ -27,20 +27,27 @@ export default function AuthForm({ route, method }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-          try {
-              const res = await api.post(route, { username, password })
-              if (method === "login") {
-                  localStorage.setItem(ACCESS_TOKEN, res.data.access);
-                  localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-                  navigate("/")
-                  window.location.reload();
-              } else {
-                  navigate("/login")
-              }
-          } catch (error) {
-              alert("Something went wrong")
-          } finally {
-          }
+      if(method === "signup") {
+        if (password!== checkPassword) {
+            setPasswordsDoNotMatch(true);
+            return;
+        } 
+      }
+
+        try {
+            const res = await api.post(route, { username, password })
+            if (method === "login") {
+                localStorage.setItem(ACCESS_TOKEN, res.data.access);
+                localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+                navigate("/")
+                window.location.reload();
+            } else {
+                navigate("/login")
+            }
+        } catch (error) {
+            setWrongPassword(true);
+        } finally {
+        }
     };
 
     var header = method === "login"? "Login" : "Sign Up"
@@ -49,8 +56,16 @@ export default function AuthForm({ route, method }) {
 
     <div className="loginDiv">
       <h2>{header}</h2>
+
+      {wrongPassword && (
+        <div className="wrongPassword">
+          <p className="wrongPasswordText">
+            The username or password you entered is incorrect. Please try
+            again.
+          </p>
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
-        ##Create a field for first name and last name###
         <div>
           <label htmlFor="username">Email:</label>
           <input
