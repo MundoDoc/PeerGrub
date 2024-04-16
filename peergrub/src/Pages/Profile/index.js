@@ -40,6 +40,7 @@ const Profile = () => {
 
   const createNewListing = () => {
     navigate("/newlistingform");
+    window.location.reload();
   };
 
   return (

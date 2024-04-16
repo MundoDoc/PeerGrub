@@ -19,13 +19,13 @@ class NewProfileCreate(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Profile.objects.filter(author=user)
+        return Profile.objects.filter(user_profile=user)
     
     def perform_create(self, serializer):
         if serializer.is_valid():
-            serializer.save(author=self.request.user)
+            serializer.save(user_profile=self.request.user)
         else:
-            print(serializer.errors)
+            print("Serializer errors: ", serializer.errors)
 
 class ProfileDelete(generics.DestroyAPIView):
     serializer_class = ProfileSerializer
@@ -33,7 +33,7 @@ class ProfileDelete(generics.DestroyAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Profile.objects.filter(author=user)
+        return Profile.objects.filter(user_profile=user)
 
 class CreateUserView(generics.CreateAPIView):
     """Create a new user in the system"""
@@ -50,11 +50,11 @@ class ListingsView(generics.CreateAPIView):
 
   def get_queryset(self):
     user = self.request.user
-    return Profile.objects.filter(author=user)
+    return Profile.objects.filter(user_profile=user)
     
   def perform_create(self, serializer):
     if serializer.is_valid():
-        serializer.save(author=self.request.user)
+        serializer.save(user_profile=self.request.user)
     else:
         print(serializer.errors)
 
@@ -66,18 +66,18 @@ class CreateListing(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Listing.objects.filter(author=user)
+        return Listing.objects.filter(user_profile=user)
     
     def perform_create(self, serializer):
         if serializer.is_valid():
-            serializer.save(author=self.request.user)
+            serializer.save(user_profile=self.request.user)
         else:
             print(serializer.errors)
 
 class ListingDelete(generics.DestroyAPIView):
-    serializer_class = ProfileSerializer
+    serializer_class = ListingSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
-        return Listing.objects.filter(author=user)
+        return Listing.objects.filter(user_profile=user)

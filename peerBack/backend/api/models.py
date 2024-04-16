@@ -11,7 +11,7 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=100)
     description = models.TextField(default="Welcome to my Profile!")
     sub_description = models.TextField(default="Happy to be here!")
-    user_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profiles')
+    user_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profile')
     profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
 
     def __str__(self):

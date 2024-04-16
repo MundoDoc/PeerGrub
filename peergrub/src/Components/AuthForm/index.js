@@ -5,6 +5,8 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constants";
 import "./index.css";
 
 export default function AuthForm({ route, method }) {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
@@ -16,6 +18,14 @@ export default function AuthForm({ route, method }) {
     setCheckPassword(event.target.value);
   };
 
+  const handleFirstNameChange = (event) => {
+    setFirstName(event.target.value);
+  };
+
+  const handleLastNameChange = (event) => {
+    setLastName(event.target.value);
+  };
+
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
@@ -24,31 +34,65 @@ export default function AuthForm({ route, method }) {
     setPassword(event.target.value);
   };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-      if(method === "signup") {
-        if (password!== checkPassword) {
+    if (method === "signup") {
+        if (password !== checkPassword) {
             setPasswordsDoNotMatch(true);
             return;
-        } 
-      }
+        } else if (firstName === "" || lastName === "") {
+            alert("Please fill out all fields");
+            return;
+        }
 
         try {
-            const res = await api.post(route, { username, password })
-            if (method === "login") {
-                localStorage.setItem(ACCESS_TOKEN, res.data.access);
-                localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-                navigate("/")
-                window.location.reload();
+            // Attempt to create the user
+            console.log(route);
+            const userRes = await api.post(route, { username, password })
+            console.log("Does this work")
+            if (userRes.status >= 200 && userRes.status < 300) {  // Check if the API call was successful
+              route = "/api/token/";
+              const newRes = await api.post(route, { username, password });
+              localStorage.setItem(ACCESS_TOKEN, newRes.data.access);
+              localStorage.setItem(REFRESH_TOKEN, newRes.data.refresh);
+              console.log("User was created successfully");
+                // User was created successfully, now create profile
+                try {
+                    var first_name = firstName;
+                    var last_name = lastName;
+                    console.log(localStorage.getItem(ACCESS_TOKEN));
+                    console.log("Sending Profile Data:", { first_name, last_name });
+                    const profileRes = await api.post('/api/profile/', { first_name, last_name});
+                    if (profileRes.status >= 200 && profileRes.status < 300) {
+                        navigate("/");
+                    } else {
+                        alert("Failed to create profile");
+                    }
+                } catch (err) {
+                    alert("Error creating profile: " + err.message);
+                }
             } else {
-                navigate("/login")
+                alert("Failed to create user");
             }
         } catch (error) {
-            setWrongPassword(true);
-        } finally {
+            setWrongPassword(true); // This might need renaming, as it might not be the correct interpretation of the error.
+            console.error('Error during user registration:', error);
         }
-    };
+    } else if (method === "login") {
+        try {
+            const res = await api.post(route, { username, password });
+            localStorage.setItem(ACCESS_TOKEN, res.data.access);
+            localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+            navigate("/");
+            window.location.reload();
+        } catch (error) {
+            setWrongPassword(true);
+        }
+    } else {
+        navigate("/login");
+    }
+};
 
     var header = method === "login"? "Login" : "Sign Up"
 
@@ -57,6 +101,7 @@ export default function AuthForm({ route, method }) {
     <div className="loginDiv">
       <h2>{header}</h2>
 
+      {/* If passwords do not match, show error message */}
       {wrongPassword && (
         <div className="wrongPassword">
           <p className="wrongPasswordText">
@@ -65,9 +110,40 @@ export default function AuthForm({ route, method }) {
           </p>
         </div>
       )}
+      {passwordsDoNotMatch && (
+        <div className="wrongPassword">
+          <p className="wrongPasswordText">
+            The passwords you entered do not match. Please try again.
+          </p>
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
+        {method !== "login" && (
+          <div>
+              <div>
+                <label htmlFor="username">First Name:</label>
+                <input
+                  type="text"
+                  id="first_name"
+                  value={firstName}
+                  onChange={handleFirstNameChange}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="username">Last Name:</label>
+                <input
+                  type="text"
+                  id="last_name"
+                  value={lastName}
+                  onChange={handleLastNameChange}
+                  required
+                />
+              </div>
+        </div>
+        )}
         <div>
-          <label htmlFor="username">Email:</label>
+          <label htmlFor="username">Username:</label>
           <input
             type="text"
             id="username"
@@ -87,7 +163,6 @@ export default function AuthForm({ route, method }) {
           />
         </div>
 
-        ### Write a method for the check password field ###
         {method !== "login" && (
           <div id="confPassword">
             <label htmlFor="password">Confirm Password:</label>
@@ -101,6 +176,7 @@ export default function AuthForm({ route, method }) {
           </div>
         )}
         <button type="submit">{header}</button>
+        {/* If user does not have an account they can create one. */}
         {method === "login" && (
           <a href="/signup">Don't Have an Account? Sign Up</a>
         )}
