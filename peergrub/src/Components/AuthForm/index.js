@@ -12,6 +12,7 @@ export default function AuthForm({ route, method }) {
   const [checkPassword, setCheckPassword] = useState("");
   const [wrongPassword, setWrongPassword] = useState(false);
   const [passwordsDoNotMatch, setPasswordsDoNotMatch] = useState(false);
+  const [checkUsername, setCheckUsername] = useState(false);
   const navigate = useNavigate();
 
   const handleCheckPasswordChange = (event) => {
@@ -48,21 +49,16 @@ export default function AuthForm({ route, method }) {
 
         try {
             // Attempt to create the user
-            console.log(route);
             const userRes = await api.post(route, { username, password })
-            console.log("Does this work")
             if (userRes.status >= 200 && userRes.status < 300) {  // Check if the API call was successful
               route = "/api/token/";
               const newRes = await api.post(route, { username, password });
               localStorage.setItem(ACCESS_TOKEN, newRes.data.access);
               localStorage.setItem(REFRESH_TOKEN, newRes.data.refresh);
-              console.log("User was created successfully");
                 // User was created successfully, now create profile
                 try {
                     var first_name = firstName;
                     var last_name = lastName;
-                    console.log(localStorage.getItem(ACCESS_TOKEN));
-                    console.log("Sending Profile Data:", { first_name, last_name });
                     const profileRes = await api.post('/api/profile/', { first_name, last_name});
                     if (profileRes.status >= 200 && profileRes.status < 300) {
                         navigate("/");
@@ -76,7 +72,7 @@ export default function AuthForm({ route, method }) {
                 alert("Failed to create user");
             }
         } catch (error) {
-            setWrongPassword(true); // This might need renaming, as it might not be the correct interpretation of the error.
+            setCheckUsername(true); // This might need renaming, as it might not be the correct interpretation of the error.
             console.error('Error during user registration:', error);
         }
     } else if (method === "login") {
@@ -114,6 +110,13 @@ export default function AuthForm({ route, method }) {
         <div className="wrongPassword">
           <p className="wrongPasswordText">
             The passwords you entered do not match. Please try again.
+          </p>
+        </div>
+      )}
+      {checkUsername && (
+        <div className="wrongPassword">
+          <p className="wrongPasswordText">
+            The username you entered is already taken. Login instead.
           </p>
         </div>
       )}
@@ -179,6 +182,9 @@ export default function AuthForm({ route, method }) {
         {/* If user does not have an account they can create one. */}
         {method === "login" && (
           <a href="/signup">Don't Have an Account? Sign Up</a>
+        )}
+        {method === "signup" && (
+          <a href="/login">Login here</a>
         )}
       </form>
     </div>
