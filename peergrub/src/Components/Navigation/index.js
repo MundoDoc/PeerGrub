@@ -8,7 +8,7 @@ import { Tabs, Tab } from '@mui/material';
 
 function Navigation() {
     const [isCollapsed, setIsCollapsed] = useState(true);
-    const [value, setValue] = React.useState(4);
+    const [value, setValue] = React.useState(2);
     let navigate = useNavigate();
 
     const handleChange = (event, newValue) => {
@@ -66,9 +66,7 @@ function Navigation() {
                                 <MenuIcon />
                             </button>
                             {/* Always visible item */}
-                            <button className="nav-item">
-                                <a><SideCart /></a>
-                            </button>
+                                <a className='nav-item'><SideCart /></a>
                         </ul>
                     </div>
                 </div>
