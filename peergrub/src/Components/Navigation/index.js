@@ -89,7 +89,7 @@ function Navigation() {
                         <a className="nav-link">Login/Signup</a>
                     </button>
                     )}
-                    {localStorage!== null && (
+                    {localStorage.getItem('access')!== null && (
                         <button className="nav-item navUnique navBottom" onClick={() =>{ setIsCollapsed(true); navigate('/profile')}}>
                         <a className="nav-link">Profile</a>
                     </button>
