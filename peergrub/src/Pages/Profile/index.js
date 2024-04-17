@@ -1,32 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import api from "../../api";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
 import ItemListings from "../../Components/ItemListings";
 
 const Profile = () => {
   // Initial state for name and bio
-  const [name, setName] = useState("John Doe");
-  const [bio, setBio] = useState(
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  );
-  const [contact, setContact] = useState("Contact Me");
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
+  const [description, setDescription] = useState("");
+  const [contact, setContact] = useState("");
 
   // State to control whether editing mode is enabled
   const [editing, setEditing] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    handleNameChange();
+  }, []);
+
   // Handler functions to update name and bio
   const handleNameChange = (e) => {
-    setName(e.target.value);
+    api
+      .get("/api/profile/")
+      .then((res) => res.data)
+      .then((data) => {
+        setName(data.results[0].first_name + " " + data.results[0].last_name);
+        setBio(data.results[0].description);
+        setDescription(data.results[0].sub_description);
+      });
   };
 
-  const handleBioChange = (e) => {
-    setBio(e.target.value);
-  };
-
-  const handleContactChange = (e) => {
-    setContact(e.target.value);
-  };
 
   // Toggle editing mode
   const toggleEditing = () => {
@@ -63,8 +67,8 @@ const Profile = () => {
             <input
               type="text"
               className="profile-name-input"
-              value={name}
               onChange={handleNameChange}
+              value={name}
             />
           ) : (
             <h1 className="profile-name">{name}</h1>
@@ -73,7 +77,6 @@ const Profile = () => {
             <textarea
               className="profile-bio-input"
               value={bio}
-              onChange={handleBioChange}
             />
           ) : (
             <p className="profile-bio">{bio}</p>
@@ -82,11 +85,10 @@ const Profile = () => {
             <input
               type="text"
               className="contact-input"
-              value={contact}
-              onChange={handleContactChange}
+              value={description}
             />
           ) : (
-            <p className="contact">{contact}</p>
+            <p className="contact">{description}</p>
           )}
         </div>
       </div>
