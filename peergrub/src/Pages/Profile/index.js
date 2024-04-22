@@ -9,7 +9,7 @@ const Profile = () => {
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
   const [description, setDescription] = useState("");
-  const [contact, setContact] = useState("");
+  const [picture, setPicture] = useState("");
 
   // State to control whether editing mode is enabled
   const [editing, setEditing] = useState(false);
@@ -17,6 +17,7 @@ const Profile = () => {
 
   useEffect(() => {
     handleNameChange();
+    handleGetPicture();
   }, []);
 
   // Handler functions to update name and bio
@@ -28,7 +29,22 @@ const Profile = () => {
         setName(data.results[0].first_name + " " + data.results[0].last_name);
         setBio(data.results[0].description);
         setDescription(data.results[0].sub_description);
+        setPicture(data.results[0].profile_image);
+        console.log(data.results[0]);
       });
+  };
+
+  const handleUploadPicture = (event) => {
+    const file = event.target.files[0]; // Get the file from the event
+    if (!file) {
+      console.error('No file selected.');
+      return;
+    }
+  
+    api
+      .post("/api/profile/upload_picture/", {
+        file: file,
+      })
   };
 
 
@@ -47,6 +63,19 @@ const Profile = () => {
     window.location.reload();
   };
 
+  const handleGetPicture = () => {
+    api
+      .get("/api/profile/")
+      .then((res) => res.data)
+      .then((data) => {
+        setPicture(data.results[0].profile_image);
+        if (picture === null) {
+          setPicture("https://via.placeholder.com/150");
+        }
+        console.log(picture);
+      });
+  };
+
   return (
     <div className="profile">
       <div className="edit-button-container">
@@ -60,19 +89,11 @@ const Profile = () => {
       </div>
       <div className="profile-info">
         <div className="profile-picture">
-          <img src="https://via.placeholder.com/150" alt="Profile" />
+          <img src={picture} alt="Profile" />
         </div>
         <div className="profile-details">
-          {editing ? (
-            <input
-              type="text"
-              className="profile-name-input"
-              onChange={handleNameChange}
-              value={name}
-            />
-          ) : (
-            <h1 className="profile-name">{name}</h1>
-          )}
+
+          <h1 className="profile-name">{name}</h1>
           {editing ? (
             <textarea
               className="profile-bio-input"
@@ -89,6 +110,12 @@ const Profile = () => {
             />
           ) : (
             <p className="contact">{description}</p>
+          )}
+          {editing && (
+            <form onSubmit={(e) => e.preventDefault()}>
+              <input type="file" onChange={handleUploadPicture} />
+              <button type="submit">Upload Picture</button>
+            </form>
           )}
         </div>
       </div>

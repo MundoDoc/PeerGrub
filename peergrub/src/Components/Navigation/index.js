@@ -8,7 +8,7 @@ import { Tabs, Tab } from '@mui/material';
 
 function Navigation() {
     const [isCollapsed, setIsCollapsed] = useState(true);
-    const [value, setValue] = React.useState(2);
+    const [value, setValue] = useState("");
     let navigate = useNavigate();
 
     const handleChange = (event, newValue) => {
@@ -26,9 +26,6 @@ function Navigation() {
                 }else{
                     navigate('/profile');
                 }
-                break;
-            case 3:
-                navigate('/');
                 break;
             default:
                 navigate('/');
