@@ -3,8 +3,10 @@ from django.contrib.auth.models import User
 from taggit.managers import TaggableManager 
 # pip install django-taggit in terminal to install TaggableManager
 # if there is a package error and add "taggit" in INSTALLED_APPS at settings.py
-
-# Create your models here.
+from django.forms import ValidationError
+from django.urls import reverse
+from django.utils.text import slugify
+from django.db.models import Avg
 
 class Profile(models.Model):
     first_name = models.CharField(max_length=100)
@@ -46,3 +48,80 @@ class Listing(models.Model):
 
     def __str__(self):
         return self.Listing_Title
+    
+    def get_absolute_url(self):
+        return reverse('listingDetail', args=[str(self.slug)])
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.Listing_Title)
+        super(Listing, self).save(*args, **kwargs)
+
+        #Create ListingRatingStats if it doesn't exist for a new listing object
+        if not hasattr(self, 'listingRatingStats'):
+            ListingRatingStats.objects.create(listing=self)
+
+class Rating(models.Model):
+    profile_user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile_user',default=False)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='listrating',default=False)
+    RATING_CHOICES = (
+        (1, '★'),
+        (2, '★★'),
+        (3, '★★★'),
+        (4, '★★★★'),
+        (5, '★★★★★'),
+    )
+    rate_choices = models.IntegerField(choices=RATING_CHOICES)
+    review = models.TextField(blank=True,null=True)
+    
+    class Meta:
+        verbose_name = "Make Rating"
+        # Add unique_together constraint to ensure one rating per profile per listing
+        unique_together = ['profile_user', 'listing']
+
+    def __str__(self):
+        return self.listing.Listing_Title
+    
+    def save(self, *args, **kwargs):
+        # Check if a rating already exists for the profile and listing
+        if Rating.objects.filter(profile_user=self.profile_user, listing=self.listing).exists():
+            # Handle duplicate rating (raise an exception or return)
+            raise ValidationError("Rating already exists for this profile and listing.")
+        
+        super(Rating, self).save(*args, **kwargs)
+        
+        # Update listing rating stats
+        if self.listing and self.listing.listingRatingStats:
+            self.listing.listingRatingStats.update_rating_stats()
+
+    def delete(self, *args, **kwargs):
+        listing_rating_stats = self.listing.listingRatingStats
+        super(Rating, self).delete(*args, **kwargs)
+        if listing_rating_stats:
+            listing_rating_stats.update_rating_stats()
+
+    def get_rating_display(self):
+        """Convert numerical rating to its string representation."""
+        return '★' * self.rate_choices
+    
+class ListingRatingStats(models.Model):
+    listing = models.OneToOneField(Listing, on_delete=models.CASCADE, related_name='listingRatingStats',default=False)
+    rating_count = models.IntegerField(default=0)
+    rating_average = models.DecimalField(max_digits=3, decimal_places=2, default=0.0)
+
+    class Meta:
+        verbose_name = "Listing Rating Stat"
+
+    def __str__(self):
+        return self.listing.Listing_Title
+    
+    def update_rating_stats(self):
+        ratings = self.listing.listrating.all()
+        if ratings.exists():
+            self.rating_count = ratings.count()
+            self.rating_average = ratings.aggregate(Avg('rate_choices'))['rate_choices__avg']
+            self.save()
+        else:
+            self.rating_count = 0
+            self.rating_average = 0.0
+            self.save()
