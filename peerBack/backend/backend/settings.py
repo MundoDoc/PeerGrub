@@ -19,7 +19,22 @@ SECRET_KEY = "django-insecure-3&c&+9^2xyf%x!x0+&_9@tj*_$8g0o4#02(8_8ad5(l3z7_^f-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+]
+CORS_EXPOSE_HEADERS = [
+    'Authorization',
+]
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+]
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SECURE = False
 ALLOWED_HOSTS = ["*"]
 
 REST_FRAMEWORK = {
@@ -27,12 +42,18 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+        'rest_framework.authentication.TokenAuthentication',
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10,
+    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
+    'NON_FIELD_ERRORS_KEY': 'error',
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
 }
 
 SIMPLE_JWT = {
@@ -53,10 +74,12 @@ INSTALLED_APPS = [
     "taggit",
     "api",
     "rest_framework",
+    "rest_framework.authtoken",
     "corsheaders",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -64,8 +87,20 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
 ]
+# middlewares.py or in your settings.py directly under MIDDLEWARE definition
+class CORSMiddlewareDebug:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Add logging before processing the request
+        print(f"Received request from origin: {request.headers.get('Origin')}")
+        response = self.get_response(request)
+        # Check what CORS headers have been applied
+        print(f"Response includes CORS headers: {response.has_header('Access-Control-Allow-Origin')}")
+        return response
+
 
 ROOT_URLCONF = "backend.urls"
 
@@ -84,6 +119,13 @@ TEMPLATES = [
         },
     },
 ]
+
+# settings.py
+FILE_UPLOAD_HANDLERS = [
+    'django.core.files.uploadhandler.MemoryFileUploadHandler',
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+]
+
 
 WSGI_APPLICATION = "backend.wsgi.application"
 
@@ -142,6 +184,3 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWS_CREDENTIALS = True

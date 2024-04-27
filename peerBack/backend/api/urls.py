@@ -1,9 +1,14 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from . import views
 
+router = DefaultRouter()
+router.register(r'profile', views.ProfileViewSet)
+
 urlpatterns = [
-    path('profile/', views.NewProfileCreate.as_view(), name='profile-list'),
-    path('profile/delete/<int:pk>/', views.ProfileDelete.as_view(), name='profile-delete'),
-    path('listings/',views.ListingsView.as_view(), name='listings'),
-    path('listings/delete/<int:pk>/', views.ListingDelete.as_view(), name='deleteListing'),
+    path('api/', include(router.urls)),
+    path('listings/', views.ListingsView.as_view(), name='listings'),
+    path("media/profile_image/", views.ImageView.as_view(), name="profile_image"),
+    path('set-csrf-cookie/', views.set_csrf_token, name='set-csrf-cookie'),
+    path('upload_profile_image/', views.upload_profile_image, name='upload_image'),
 ]

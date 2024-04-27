@@ -5,6 +5,10 @@ class ProfileForm(forms.ModelForm):
   class Meta:
     model = Profile
     fields = '__all__'  
+    def clean_sub_description(self):
+      data = self.cleaned_data['sub_description']
+      # Add your validation for sub_description here
+      return data
 
 class ListingForm(forms.ModelForm):
   class Meta:
