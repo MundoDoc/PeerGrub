@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../api";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constants";
@@ -14,6 +14,12 @@ export default function AuthForm({ route, method }) {
   const [passwordsDoNotMatch, setPasswordsDoNotMatch] = useState(false);
   const [checkUsername, setCheckUsername] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(localStorage.getItem(ACCESS_TOKEN)) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const handleCheckPasswordChange = (event) => {
     setCheckPassword(event.target.value);

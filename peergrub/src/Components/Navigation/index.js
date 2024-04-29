@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import './index.css';
 import Logo from '../../Assets/Logo.png';
@@ -8,8 +8,12 @@ import { Tabs, Tab } from '@mui/material';
 
 function Navigation() {
     const [isCollapsed, setIsCollapsed] = useState(true);
-    const [value, setValue] = useState("");
+    const [value, setValue] = useState(null);
     let navigate = useNavigate();
+    
+    const stopTab = () => {
+        setValue(null);
+    }
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -40,7 +44,7 @@ function Navigation() {
             <nav className="navbar navbar-expand-md bg-body-tertiary">
                 <div className="container-fluid">
                     {/* Logo */}
-                    <a className="navbar-brand" href="/"><img src={Logo} alt="Logo" style={{ width: '50px' }} />Peer Grub</a>
+                    <a className="navbar-brand" href="/" onClick={stopTab}><img src={Logo} alt="Logo" style={{ width: '50px' }} />Peer Grub</a>
                     
                     {/* Links and SideCart */}
                     <div className={`${isCollapsed ? 'collapsed' : ''}`}>
@@ -76,19 +80,19 @@ function Navigation() {
             <div className={`newCollapse ${isCollapsed ? 'hide' : 'show'}`}>
                 <ul className="navbar-nav newNav">
                     <button className="nav-item navUnique navBottom" onClick={() =>{ setIsCollapsed(true); navigate('/listings')}}>
-                        <a className="nav-link">Listings</a>
+                        <a href="#" className="nav-link">Listings</a>
                     </button>
                     <button className="nav-item navUnique navBottom" onClick={() =>{ setIsCollapsed(true); navigate('/about')}}>
-                        <a className="nav-link">About</a>
+                        <a href="#" className="nav-link">About</a>
                     </button>
                     {localStorage.getItem('access') === null && (
                         <button className="nav-item navUnique navBottom" onClick={() =>{ setIsCollapsed(true); navigate('/login')}}>
-                        <a className="nav-link">Login/Signup</a>
+                        <a href="#" className="nav-link">Login/Signup</a>
                     </button>
                     )}
                     {localStorage.getItem('access')!== null && (
                         <button className="nav-item navUnique navBottom" onClick={() =>{ setIsCollapsed(true); navigate('/profile')}}>
-                        <a className="nav-link">Profile</a>
+                        <a href="#" className="nav-link">Profile</a>
                     </button>
                     )}
                 </ul>

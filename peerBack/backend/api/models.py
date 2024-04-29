@@ -22,7 +22,7 @@ class Profile(models.Model):
     
 class Listing(models.Model):
     Listing_Title = models.CharField(max_length=40)
-    Listing_Image = models.ImageField(null=True)
+    Listing_Image = models.ImageField(upload_to='Listing_Image/', blank=True, null=True)
     # For each instance, we display field1, field2, and the associated tags 
     field_1 = models.CharField(max_length=50,default=True)
     field_2 = models.CharField(max_length=50,default=True)

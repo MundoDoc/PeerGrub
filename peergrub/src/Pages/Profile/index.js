@@ -13,7 +13,6 @@ const Profile = () => {
   const [lastName, setLastName] = useState(""); // Assuming you want to separately handle last name
   const [bio, setBio] = useState("");
   const [description, setDescription] = useState("");
-  const [subDescription, setSubDescription] = useState("");
   const [picture, setPicture] = useState(StockImage);
   const [file, setFile] = useState(null);
   const [editing, setEditing] = useState(false);
@@ -39,6 +38,7 @@ const Profile = () => {
       setLastName(data.last_name);
       setBio(data.description);
       setDescription(data.sub_description);
+      setFile(data.profile_image || StockImage);
       setPicture(data.profile_image || StockImage);
       setUserID(data.id);
     });
@@ -52,9 +52,6 @@ const Profile = () => {
         break;
       case "description":
         setDescription(value);
-        break;
-      case "subDescription":
-        setSubDescription(value);
         break;
       default:
         break;
@@ -80,8 +77,11 @@ const Profile = () => {
     formData.append("last_name", lastName);
     formData.append("description", bio);
     formData.append("sub_description", description);
-    formData.append("profile_image", file);
-
+    // Only append the profile_image if a new file has been selected
+    if (file !== StockImage && file) {
+      formData.append("profile_image", file);
+    }
+  
     const csrfToken = Cookies.get('csrftoken');
     try {
       const response = await fetch(`http://localhost:8000/api/profile/${userID}/`, {
@@ -92,7 +92,7 @@ const Profile = () => {
         },
         credentials: 'include'
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(`Failed to save profile: ${errorData}`);
@@ -104,6 +104,7 @@ const Profile = () => {
       alert('Error saving profile: ' + error.message);
     }
   };
+  
 
   const toggleEditing = () => {
     setEditing(!editing);
