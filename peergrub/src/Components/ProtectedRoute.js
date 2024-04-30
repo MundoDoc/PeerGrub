@@ -3,9 +3,11 @@ import { jwtDecode } from "jwt-decode"
 import api from "../api"
 import { REFRESH_TOKEN, ACCESS_TOKEN } from "../constants"
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom";
 
 export default function ProtectedRoute({ children }) {
     const [isAuthorized, setIsAuthorized] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         auth().catch(() => setIsAuthorized(false));
@@ -22,6 +24,7 @@ export default function ProtectedRoute({ children }) {
                 setIsAuthorized(false);
             }
         }catch(error){
+            navigate("/logout");
             console.log(error)
             setIsAuthorized(false);
         }
