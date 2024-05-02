@@ -124,7 +124,7 @@ class ProfileDelete(generics.DestroyAPIView):
     
 
 class CreateUserView(generics.CreateAPIView):
-    """Create a new user in the system along with their profile."""
+    """Create a new user in the system."""
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
@@ -133,24 +133,9 @@ class CreateUserView(generics.CreateAPIView):
         user_serializer = UserSerializer(data=request.data)
         if user_serializer.is_valid():
             user = user_serializer.save()
-            # Assuming the request includes profile data like 'first_name', 'last_name', etc.
-            profile_data = {
-                'first_name': request.data.get('first_name'),
-                'last_name': request.data.get('last_name'),
-                'user_profile': user.id  # Link profile to the newly created user
-            }
-            profile_serializer = ProfileSerializer(data=profile_data)
-            if profile_serializer.is_valid():
-                profile_serializer.save()
-                return Response({
-                    'user': user_serializer.data,
-                    'profile': profile_serializer.data
-                }, status=status.HTTP_201_CREATED)
-            else:
-                # If profile validation fails, delete the created user and return errors
-                user.delete()
-                return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(user_serializer.data, status=status.HTTP_201_CREATED)
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class ListingsView(viewsets.ModelViewSet):

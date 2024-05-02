@@ -62,7 +62,8 @@ export default function AuthForm({ route, method }) {
         if (userRes.status === 201 || userRes.status === 200) {
           localStorage.setItem(ACCESS_TOKEN, tokenRes.data.access);
           localStorage.setItem(REFRESH_TOKEN, tokenRes.data.refresh);
-          const profileRes = await api.get("/api/user/profile/", { first_name: firstName, last_name: lastName });
+          const profileRes = await api.post("/api/profile/", { first_name: firstName, last_name: lastName });
+          console.log(profileRes)
           if (profileRes.status > 200 && profileRes.status < 300) {
             navigate("/");
           }

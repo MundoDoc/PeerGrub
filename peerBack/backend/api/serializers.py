@@ -36,8 +36,6 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         # Example validation, replace 'some_field' with an actual field name
-        if data['some_field'] < 0:  # <-- Replace 'some_field' with an actual field name
-            raise serializers.ValidationError("This field must be positive")
         return data
 
     def update(self, instance, validated_data):
