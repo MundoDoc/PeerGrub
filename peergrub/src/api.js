@@ -20,4 +20,15 @@ api.interceptors.request.use(
     }
 );
 
+api.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    (error) => {
+        // Handle errors globally
+        // For example, you can redirect to an error page or display a toast message
+        return Promise.reject(error);
+    }
+);
+
 export default api;

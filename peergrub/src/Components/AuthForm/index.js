@@ -43,58 +43,59 @@ export default function AuthForm({ route, method }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (method === "signup") {
-        if (password !== checkPassword) {
-            setPasswordsDoNotMatch(true);
-            return;
-        } else if (firstName === "" || lastName === "") {
-            alert("Please fill out all fields");
-            return;
-        }
-
-        try {
-            // Attempt to create the user
-            const userRes = await api.post(route, { username, password })
-            if (userRes.status >= 200 && userRes.status < 300) {  // Check if the API call was successful
-              route = "/api/token/";
-              const newRes = await api.post(route, { username, password });
-              localStorage.setItem(ACCESS_TOKEN, newRes.data.access);
-              localStorage.setItem(REFRESH_TOKEN, newRes.data.refresh);
-                // User was created successfully, now create profile
-                try {
-                    var first_name = firstName;
-                    var last_name = lastName;
-                    const profileRes = await api.post('/api/profile/', { first_name, last_name});
-                    if (profileRes.status >= 200 && profileRes.status < 300) {
-                        navigate("/");
-                    } else {
-                        alert("Failed to create profile");
-                    }
-                } catch (err) {
-                    alert("Error creating profile: " + err.message);
-                }
-            } else {
-                alert("Failed to create user");
-            }
-        } catch (error) {
-            setCheckUsername(true); // This might need renaming, as it might not be the correct interpretation of the error.
-            console.error('Error during user registration:', error);
-        }
-    } else if (method === "login") {
-        try {
-            const res = await api.post(route, { username, password });
-            localStorage.setItem(ACCESS_TOKEN, res.data.access);
-            localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+      if (password !== checkPassword) {
+        setPasswordsDoNotMatch(true);
+        return;
+      } else if (firstName === "" || lastName === "") {
+        alert("Please fill out all fields");
+        return;
+      }
+  
+      try {
+        // Make sure to use the correct URL from Django's URL configurations
+        console.log("Does this work")
+        const userRes = await api.post("/api/user/register/", { username, password });
+        const tokenRes = await api.post("/api/token/", { username, password });
+        console.log("What about this")
+        if (userRes.status === 201 || userRes.status === 200) {
+          localStorage.setItem(ACCESS_TOKEN, tokenRes.data.access);
+          localStorage.setItem(REFRESH_TOKEN, tokenRes.data.refresh);
+          const profileRes = await api.get("/api/user/profile/", { first_name: firstName, last_name: lastName });
+          if (profileRes.status > 200 && profileRes.status < 300) {
             navigate("/");
-            window.location.reload();
-        } catch (error) {
-            setWrongPassword(true);
+          }
+        } else {
+          alert("Failed to create user: " + userRes.data.message);
         }
-    } else {
-        navigate("/login");
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 400 && error.response.data.username) {
+            setCheckUsername(true);
+          }
+          alert("Error during user registration: " + (error.response.data.detail || "Please check your input and try again."));
+        } else {
+          console.error("Error during user registration:", error);
+          alert("Registration failed due to network or server issue. Please try again.");
+        }
+      }
+    } else if (method === "login") {
+      try {
+        // Again, ensure the URL is correct and matches Django's URL configurations
+        const res = await api.post("/api/token/", { username, password });
+        localStorage.setItem(ACCESS_TOKEN, res.data.access);
+        localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+        navigate("/");
+        window.location.reload();
+      } catch (error) {
+        setWrongPassword(true);
+        alert("Login failed: Incorrect username or password.");
+      }
     }
 };
+
+  
 
     var header = method === "login"? "Login" : "Sign Up"
 

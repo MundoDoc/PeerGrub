@@ -1,12 +1,26 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import "./index.css";
 import ItemListings from "../../Components/ItemListings";
+import api from "../../api";
 
 export default function Listings() {
 
-  const dynamicListings = Array.from({length: 10}, (_, index) =>(
-    <ItemListings key={index} />
-  ))
+  const [allListings, setAllListings] = useState([]);
+
+  useEffect(() => {
+    getLists();
+  }, [])
+
+  const getLists = () => {
+    api 
+      .get("/api/listing/")
+      .then((res) => res.data)
+      .then((data) => {
+         setAllListings(data);
+       })
+      .catch((err) => alert(err));
+  }
 
   return (
     <div className="listing-page" style={{ alignContent: "center" }}>
@@ -16,7 +30,9 @@ export default function Listings() {
         <h2>See what Toros have in store for you</h2>
       </div>
       <div className="item-listing">
-        {dynamicListings}
+        {allListings.map((newList) => (
+          <ItemListings newList={newList} key={newList.id} />
+        ))}
       </div>
     </div>
   );

@@ -31,18 +31,38 @@ const Profile = () => {
   }, []);
 
   const fetchProfile = () => {
-    api.get("/api/profile/").then((res) => {
-      const data = res.data.results[0]; // Assuming the first result is the user's profile
-      setName(`${data.first_name} ${data.last_name}`);
-      setFirstName(data.first_name);
-      setLastName(data.last_name);
-      setBio(data.description);
-      setDescription(data.sub_description);
-      setFile(data.profile_image || StockImage);
-      setPicture(data.profile_image || StockImage);
-      setUserID(data.id);
+    const accessToken = localStorage.getItem(ACCESS_TOKEN);
+    if (!accessToken) {
+        console.log("No access token found, redirecting to login.");
+        navigate("/login");
+        return;
+    }
+
+    api.get('/api/profile/', {  // Assumes there is only one profile per user
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((res) => {
+      if (res.status === 200 && res.data) {
+        console.log('Profile Data:', res.data);  // Directly use res.data
+        setName(`${res.data.results[0].first_name} ${res.data.results[0].last_name}`);
+        setFirstName(res.data.results[0].first_name);
+        setLastName(res.data.results[0].last_name);
+        setBio(res.data.results[0].description);
+        setDescription(res.data.results[0].sub_description);
+        setPicture(res.data.results[0].profile_image || StockImage);
+        setUserID(res.data.results[0].id);
+      }
+    })
+    .catch((error) => {
+      console.error('Error fetching profile:', error);
+      navigate("/login");
     });
-  };
+};
+
+
+  
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -82,12 +102,21 @@ const Profile = () => {
       formData.append("profile_image", file);
     }
   
+    const accessToken = localStorage.getItem(ACCESS_TOKEN);
+    if (!accessToken) {
+      console.log("No access token found, redirecting to login.");
+      navigate("/login");
+      return;
+    }
+  
     const csrfToken = Cookies.get('csrftoken');
     try {
+      console.log(userID)
       const response = await fetch(`http://localhost:8000/api/profile/${userID}/`, {
-        method: 'PATCH', // Assuming the endpoint is set for PATCH request
+        method: 'PATCH',
         body: formData,
         headers: {
+          'Authorization': `Bearer ${accessToken}`, // Include bearer token
           'X-CSRFToken': csrfToken
         },
         credentials: 'include'
@@ -105,7 +134,8 @@ const Profile = () => {
     }
   };
   
-
+  
+  
   const toggleEditing = () => {
     setEditing(!editing);
   };

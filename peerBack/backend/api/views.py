@@ -18,6 +18,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.middleware.csrf import get_token
 from rest_framework.exceptions import ValidationError
 from django.core.files.base import ContentFile
+from django.shortcuts import get_object_or_404
+from rest_framework.decorators import action
 
 
 # Create your views here.
@@ -27,30 +29,57 @@ class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        # This ensures that only the profile related to the logged-in user is returned
+        return Profile.objects.filter(user_profile=self.request.user)
+
+    def retrieve(self, request, *args, **kwargs):
+        # Retrieves the profile of the logged-in user
+        instance = get_object_or_404(Profile, user_profile=request.user)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
     def perform_create(self, serializer):
+        # Ensures that the profile is linked to the logged-in user when creating a new profile
         serializer.save(user_profile=self.request.user)
 
     def perform_update(self, serializer):
-        try:
-            # Attempt to save using the serializer's save method
-            serializer.save()
-        except Exception as e:
-            print("Error during file handling or other serializer operations:", e)
-            raise
-
+        # Generic method to handle updates, might be used to handle specific logic if necessary
+        serializer.save()
 
     def partial_update(self, request, *args, **kwargs):
-        print("Received PATCH data:", request.data)  # Log data
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        if getattr(instance, '_prefetched_objects_cache', None):
-            # If 'prefetch_related' has been applied to a queryset, we need to forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}
+    def get_object(self):
+        # Retrieve the profile based on the ID provided in the URL
+        profile_id = self.kwargs.get('pk')
+        try:
+            return Profile.objects.get(pk=profile_id)
+        except Profile.DoesNotExist:
+            raise Http404
 
+    
+class UserProfileAPIView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        profile = Profile.objects.get(user_profile=request.user)
+        serializer = ProfileSerializer(profile)
         return Response(serializer.data)
+
+    def patch(self, request, *args, **kwargs):
+        profile = Profile.objects.get(user_profile=request.user)
+        serializer = ProfileSerializer(profile, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
 
 class ImageView(APIView):
     parser_classes = (MultiPartParser, FormParser)
@@ -92,14 +121,39 @@ class ProfileDelete(generics.DestroyAPIView):
     def get_queryset(self):
         user = self.request.user
         return Profile.objects.filter(user_profile=user)
+    
 
 class CreateUserView(generics.CreateAPIView):
-    """Create a new user in the system"""
+    """Create a new user in the system along with their profile."""
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
-class ListingsView(generics.CreateAPIView):
+    def post(self, request, *args, **kwargs):
+        user_serializer = UserSerializer(data=request.data)
+        if user_serializer.is_valid():
+            user = user_serializer.save()
+            # Assuming the request includes profile data like 'first_name', 'last_name', etc.
+            profile_data = {
+                'first_name': request.data.get('first_name'),
+                'last_name': request.data.get('last_name'),
+                'user_profile': user.id  # Link profile to the newly created user
+            }
+            profile_serializer = ProfileSerializer(data=profile_data)
+            if profile_serializer.is_valid():
+                profile_serializer.save()
+                return Response({
+                    'user': user_serializer.data,
+                    'profile': profile_serializer.data
+                }, status=status.HTTP_201_CREATED)
+            else:
+                # If profile validation fails, delete the created user and return errors
+                user.delete()
+                return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ListingsView(viewsets.ModelViewSet):
   queryset = Listing.objects.all()
   serializer_class = ListingSerializer
   permission_classes = [AllowAny]
