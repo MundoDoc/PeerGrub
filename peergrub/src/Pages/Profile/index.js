@@ -44,6 +44,7 @@ const Profile = () => {
       },
     })
     .then((res) => {
+      console.log(res);
       if (res.status === 200 && res.data) {
         console.log('Profile Data:', res.data);  // Directly use res.data
         setName(`${res.data.results[0].first_name} ${res.data.results[0].last_name}`);
@@ -54,6 +55,14 @@ const Profile = () => {
         setPicture(res.data.results[0].profile_image || StockImage);
         setUserID(res.data.results[0].id);
       }
+    })
+    api.get('/api/listing/', {  // Assumes there is only one profile per user
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((res) => {
+      console.log(res)
     })
     .catch((error) => {
       console.error('Error fetching profile:', error);
@@ -78,7 +87,12 @@ const Profile = () => {
     }
   };
 
+  const handleNav = () => {
+    navigate("/createlisting");
+  }
+
   const handleFileChange = (event) => {
+    console.log(event)
     const newFile = event.target.files[0];
     setFile(newFile);
     if (newFile) {
@@ -132,6 +146,7 @@ const Profile = () => {
       console.error('Error saving profile:', error);
       alert('Error saving profile: ' + error.message);
     }
+    setEditing(false);
   };
   
   
@@ -148,8 +163,9 @@ const Profile = () => {
   return (
     <div className="profile">
       <div className="edit-button-container">
-        <button className="edit-button" onClick={toggleEditing}>{editing ? "Save" : "Edit"}</button>
-        <button className="add-dish-button" onClick={handleSaveProfile}>{editing ? "Save Profile" : "Edit Profile"}</button>
+        {editing && <button className="edit-button" onClick={handleSaveProfile}>Save</button>}
+        {!editing && <button className="edit-button" onClick={toggleEditing}>Edit</button>}
+        <button className="add-dish-button" onClick={handleNav}>Create Listing</button>
         <button className="add-dish-button" onClick={logMeOut}>Logout</button>
       </div>
       <div className="profile-info">

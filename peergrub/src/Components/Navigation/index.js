@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate, useLocation } from 'react-router-dom'; 
 import './index.css';
 import Logo from '../../Assets/Logo.png';
 import SideCart from '../SideCart';
@@ -10,10 +10,19 @@ function Navigation() {
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [value, setValue] = useState(null);
     let navigate = useNavigate();
+    const location = useLocation();
     
     const stopTab = () => {
         setValue(null);
     }
+
+    useEffect(() => {
+        if(location.pathname == "/"){
+            setValue(null);
+            handleChange();
+        }
+        console.log(location.pathname)
+    }, [])
 
     const handleChange = (event, newValue) => {
         setValue(newValue);

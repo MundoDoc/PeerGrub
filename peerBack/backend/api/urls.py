@@ -1,10 +1,10 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ProfileViewSet, ListingsView, set_csrf_token, upload_profile_image
+from .views import ProfileViewSet, CreateListing, set_csrf_token, upload_profile_image
 
 router = DefaultRouter()
 router.register(r'profile', ProfileViewSet)
-router.register(r'listing', ListingsView)
+router.register(r'listing', CreateListing)
 
 urlpatterns = [
     path('api/', include(router.urls)),

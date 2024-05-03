@@ -1,27 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import api from "../../api";
+import { useNavigate } from "react-router-dom";
 import "./index.css";
+import Cookies from 'js-cookie';
+import { ACCESS_TOKEN } from "../../constants";
 
 const NewListingForm = () => {
   const [image, setImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
+  const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
-  const [tags, setTags] = useState("");
+  const [tags, setTags] = useState("Food");
   const [cost, setCost] = useState("");
   const [description, setDescription] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [allergens, setAllergens] = useState([]);
+  const navigate = useNavigate();
 
-  const handleImageChange = (event) => {
-    const selectedImage = event.target.files[0];
-    if (selectedImage) {
-      setImage(selectedImage);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result);
-      };
-      reader.readAsDataURL(selectedImage);
-    }
-  };
+  useEffect(() => {
+    fetch('http://localhost:8000/set-csrf-cookie/', {
+      credentials: 'include'
+      })
+      .then(response => response.json())
+      .then(() => console.log('CSRF cookie set'))
+      .catch(error => console.error('Error setting CSRF cookie:', error));
+  })
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -51,29 +53,75 @@ const NewListingForm = () => {
     }
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Handle form submission
+  const handleImageInput = (event) => {
+    const newFile = event.target.files[0];
+    setFile(newFile);
+    if (newFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+      reader.readAsDataURL(newFile);
+    }
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if(title === "" || cost === "" || description === "" || ingredients === "" || file === null) {
+      alert("Please fill out all required fields");
+      return;
+    }
+  
+    try {
+      const token = localStorage.getItem(ACCESS_TOKEN); // Assuming you're storing the token in localStorage
+      if (!token) {
+        throw new Error("Authentication token not found");
+      }
+  
+      const csrfToken = Cookies.get('csrftoken');
+      const headers = {
+        "Authorization": `Bearer ${token}`,
+        'X-CSRFToken': csrfToken,
+      };
+  
+      const formData = new FormData();
+      formData.append("Listing_Image", file); // Use the file state directly
+      formData.append("Listing_Title", title);
+      formData.append("Listing_Cost", cost);
+      formData.append("Listing_Descr", description);
+      formData.append("Listing_Ingredients", ingredients);
+  
+      const response = await api.post("/api/listing/", formData, { headers });
+      if (response.status >= 200 && response.status < 300) {
+        console.log(response);
+        navigate("/profile");
+      } else {
+        throw new Error(`Failed to create listing: ${response.data.message}`);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while creating the listing");
+    }
+  }
+  
+  
 
   return (
     <div className="new-listing-form">
       <h2>Create New Listing</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="image">Upload Photo:</label>
+          <label htmlFor="image">*Upload Photo:</label>
           <input
             type="file"
-            id="image"
-            accept="image/*"
-            onChange={handleImageChange}
+            onChange={handleImageInput}
           />
-          {previewImage && (
-            <img src={previewImage} alt="Preview" className="preview-image" />
+          {image && (
+            <img src={image} alt="Preview" className="preview-image" />
           )}
         </div>
         <div className="form-group">
-          <label htmlFor="title">Title:</label>
+          <label htmlFor="title">*Title:</label>
           <input
             type="text"
             id="title"
@@ -89,11 +137,10 @@ const NewListingForm = () => {
             id="tags"
             value={tags}
             onChange={handleTagsChange}
-            required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="cost">Cost:</label>
+          <label htmlFor="cost">*Cost:</label>
           <input
             type="text"
             id="cost"
@@ -103,7 +150,7 @@ const NewListingForm = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="description">Description:</label>
+          <label htmlFor="description">*Description:</label>
           <textarea
             id="description"
             value={description}
@@ -112,7 +159,7 @@ const NewListingForm = () => {
           ></textarea>
         </div>
         <div className="form-group">
-          <label htmlFor="ingredients">Ingredients:</label>
+          <label htmlFor="ingredients">*Ingredients:</label>
           <textarea
             id="ingredients"
             value={ingredients}
@@ -123,43 +170,61 @@ const NewListingForm = () => {
         <div className="form-group">
           <label>Allergens:</label>
           <div className="allergen-options">
-            <button
-              className={allergens.includes("Nuts") ? "active" : ""}
-              onClick={() => handleAllergenChange("Nuts")}
-            >
-              Nuts
-            </button>
-            <button
-              className={allergens.includes("Dairy") ? "active" : ""}
-              onClick={() => handleAllergenChange("Dairy")}
-            >
-              Dairy
-            </button>
-            <button
-              className={allergens.includes("Eggs") ? "active" : ""}
-              onClick={() => handleAllergenChange("Eggs")}
-            >
-              Eggs
-            </button>
-            <button
-              className={allergens.includes("Gluten") ? "active" : ""}
-              onClick={() => handleAllergenChange("Gluten")}
-            >
-              Gluten
-            </button>
-            <button
-              className={allergens.includes("Soy") ? "active" : ""}
-              onClick={() => handleAllergenChange("Soy")}
-            >
-              Soy
-            </button>
-            {/* Add more allergen buttons */}
-            <button
-              className={allergens.includes("Other") ? "active" : ""}
-              onClick={() => handleAllergenChange("Other")}
-            >
-              Other
-            </button>
+            <input
+              type="checkbox"
+              id="nuts"
+              value="Nuts"
+              checked={allergens.includes("Nuts")}
+              onChange={() => handleAllergenChange("Nuts")}
+            />
+            <label htmlFor="nuts">Nuts</label>
+
+            <input
+              type="checkbox"
+              id="dairy"
+              value="Dairy"
+              checked={allergens.includes("Dairy")}
+              onChange={() => handleAllergenChange("Dairy")}
+            />
+            <label htmlFor="dairy">Dairy</label>
+
+            <input
+              type="checkbox"
+              id="eggs"
+              value="Eggs"
+              checked={allergens.includes("Eggs")}
+              onChange={() => handleAllergenChange("Eggs")}
+            />
+            <label htmlFor="eggs">Eggs</label>
+
+            <input
+              type="checkbox"
+              id="gluten"
+              value="Gluten"
+              checked={allergens.includes("Gluten")}
+              onChange={() => handleAllergenChange("Gluten")}
+            />
+            <label htmlFor="gluten">Gluten</label>
+
+            <input
+              type="checkbox"
+              id="soy"
+              value="Soy"
+              checked={allergens.includes("Soy")}
+              onChange={() => handleAllergenChange("Soy")}
+            />
+            <label htmlFor="soy">Soy</label>
+
+            {/* Add more allergen checkboxes */}
+            <input
+              type="checkbox"
+              id="other"
+              value="Other"
+              checked={allergens.includes("Other")}
+              onChange={() => handleAllergenChange("Other")}
+            />
+            <label htmlFor="other">Other</label>
+
           </div>
         </div>
         <button type="submit">Create Listing</button>

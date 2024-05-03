@@ -55,4 +55,14 @@ class ProfileSerializer(serializers.ModelSerializer):
 class ListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Listing
-        fields = ("id", 'Listing_Title', 'List_Time', 'Listing_Tags', 'Listing_Cost', 'Listing_Calories', 'Listing_Descr', 'Listing_Ingredients', 'allergen_choices')
+        fields = ("id", "user_profile", "Listing_Image", "Listing_Title", "Listing_Cost", "Listing_Descr", "Listing_Ingredients")
+        extra_kwargs = {
+            "id": {"read_only": True},
+        }
+
+    def create(self, validated_data):
+        # You can remove any reference to user_profile here
+        return super().create(validated_data)
+
+
+

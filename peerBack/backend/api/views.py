@@ -139,41 +139,58 @@ class CreateUserView(generics.CreateAPIView):
 
 
 class ListingsView(viewsets.ModelViewSet):
-  queryset = Listing.objects.all()
-  serializer_class = ListingSerializer
-  permission_classes = [AllowAny]
-  template_name = "api/listingsPage.html"
-  model = Listing
-
-  def get_queryset(self):
-    user = self.request.user
-    return Profile.objects.filter(user_profile=user)
-    
-  def perform_create(self, serializer):
-    if serializer.is_valid():
-        serializer.save(user_profile=self.request.user)
-    else:
-        print(serializer.errors)
-
-class CreateListing(generics.ListCreateAPIView):
+    queryset = Listing.objects.all()
     serializer_class = ListingSerializer
-    permission_classes = [IsAuthenticated]
-    model = Listing
-    form_class = ListingForm
+    permission_classes = [AllowAny]  # Allow anyone to view listings
 
     def get_queryset(self):
-        user = self.request.user
-        return Listing.objects.filter(user_profile=user)
+        return Listing.objects.all() 
+
+
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow owners of an object to delete it.
+    """
+    def has_object_permission(self, request, view, obj):
+        # Allow GET, HEAD, and OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        # Check if the requesting user is the owner of the listing.
+        return obj.user_profile == request.user
     
+
+class IsAuthorOrReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow authors of an object to edit or delete it.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to anyone
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        # Write permissions are only allowed to the author of the listing
+        return obj.user_profile == request.user
+
+class CreateListing(viewsets.ModelViewSet):
+    queryset = Listing.objects.all()
+    serializer_class = ListingSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+
     def perform_create(self, serializer):
-        if serializer.is_valid():
-            serializer.save(user_profile=self.request.user)
-        else:
-            print(serializer.errors)
+        serializer.save(user_profile=self.request.user)
+
+    def get_permissions(self):
+        if self.action in ['update', 'partial_update', 'destroy']:
+            return [permissions.IsAuthenticated(), IsAuthorOrReadOnly()]
+        return super().get_permissions()
+
+
 
 class ListingDelete(generics.DestroyAPIView):
     serializer_class = ListingSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
     def get_queryset(self):
         user = self.request.user

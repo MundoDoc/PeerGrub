@@ -17,7 +17,8 @@ export default function Listings() {
       .get("/api/listing/")
       .then((res) => res.data)
       .then((data) => {
-         setAllListings(data);
+         setAllListings(data.results);
+         console.log(data.results);
        })
       .catch((err) => alert(err));
   }

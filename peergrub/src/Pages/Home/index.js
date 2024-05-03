@@ -4,7 +4,8 @@ import Slideshow from '../../Components/Slideshow'; // Adjust the import path ba
 import AllFood from '../../Assets/AllFood.JPG';
 import SpotLight from '../../Components/SpotLight'; // Adjust the import path based on your file structure
 
-export default function Home() {
+export default function Home(){
+
   return (
     <div className='homeDiv'>
       <div className='homeStory'>

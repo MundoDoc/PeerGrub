@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, BrowserRouter, Navigate } from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import "./App.css";
 import Nav from "./Components/Navigation";
 import Home from "./Pages/Home";
@@ -13,14 +13,9 @@ import NewListing from "./Pages/NewListing";
 import Footer from "./Components/Footer";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import NewListingForm from "./Pages/NewListing";
-
-function Logout() {
-  localStorage.clear();
-  return <Navigate to="/" />;
-}
+import Logout from "./Pages/Logout"
 
 function RegisterAndLogout() {
-  //localStorage.clear();
   return <SignUp />;
 }
 
