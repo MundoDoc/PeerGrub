@@ -8,6 +8,7 @@ import StockImage from "../../Assets/stockImage.png";
 import { ACCESS_TOKEN } from "../../constants";
 
 const Profile = () => {
+  const [allListings, setAllListings] = useState([]);
   const [name, setName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState(""); // Assuming you want to separately handle last name
@@ -56,18 +57,16 @@ const Profile = () => {
         setUserID(res.data.results[0].id);
       }
     })
-    api.get('/api/listing/', {  // Assumes there is only one profile per user
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    .then((res) => {
-      console.log(res)
-    })
-    .catch((error) => {
-      console.error('Error fetching profile:', error);
-      navigate("/login");
-    });
+
+    api 
+      .get("/api/listing/")
+      .then((res) => res.data)
+      .then((data) => {
+          setAllListings(data.results);
+          console.log(data.results);
+        })
+      .catch((err) => alert(err));
+
 };
 
 
@@ -179,7 +178,9 @@ const Profile = () => {
           {editing ? <input name="description" type="text" value={description} onChange={handleInputChange} /> : <p className="contact">{description}</p>}
         </div>
       </div>
-      <ItemListings />
+      {allListings.map((newList) => (
+          <ItemListings newList={newList} key={newList.id} />
+        ))}
     </div>
   );
 };
