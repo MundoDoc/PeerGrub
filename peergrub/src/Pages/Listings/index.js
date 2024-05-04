@@ -32,7 +32,7 @@ export default function Listings() {
       </div>
       <div className="item-listing">
         {allListings.map((newList) => (
-          <ItemListings newList={newList} key={newList.id} />
+          <ItemListings route="listings" newList={newList} key={newList.id} />
         ))}
       </div>
     </div>

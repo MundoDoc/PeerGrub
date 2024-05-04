@@ -167,9 +167,10 @@ const NewListingForm = () => {
             required
           ></textarea>
         </div>
-        <div className="form-group">
+        <div className="form-group allergens">
           <label>Allergens:</label>
           <div className="allergen-options">
+            <label htmlFor="nuts">Nuts</label>
             <input
               type="checkbox"
               id="nuts"
@@ -177,8 +178,8 @@ const NewListingForm = () => {
               checked={allergens.includes("Nuts")}
               onChange={() => handleAllergenChange("Nuts")}
             />
-            <label htmlFor="nuts">Nuts</label>
 
+            <label htmlFor="dairy">Dairy</label>
             <input
               type="checkbox"
               id="dairy"
@@ -186,8 +187,8 @@ const NewListingForm = () => {
               checked={allergens.includes("Dairy")}
               onChange={() => handleAllergenChange("Dairy")}
             />
-            <label htmlFor="dairy">Dairy</label>
 
+            <label htmlFor="eggs">Eggs</label>
             <input
               type="checkbox"
               id="eggs"
@@ -195,8 +196,8 @@ const NewListingForm = () => {
               checked={allergens.includes("Eggs")}
               onChange={() => handleAllergenChange("Eggs")}
             />
-            <label htmlFor="eggs">Eggs</label>
-
+            
+            <label htmlFor="gluten">Gluten</label>
             <input
               type="checkbox"
               id="gluten"
@@ -204,8 +205,8 @@ const NewListingForm = () => {
               checked={allergens.includes("Gluten")}
               onChange={() => handleAllergenChange("Gluten")}
             />
-            <label htmlFor="gluten">Gluten</label>
 
+            <label htmlFor="soy">Soy</label>
             <input
               type="checkbox"
               id="soy"
@@ -213,9 +214,10 @@ const NewListingForm = () => {
               checked={allergens.includes("Soy")}
               onChange={() => handleAllergenChange("Soy")}
             />
-            <label htmlFor="soy">Soy</label>
+
 
             {/* Add more allergen checkboxes */}
+            <label htmlFor="other">Other</label>
             <input
               type="checkbox"
               id="other"
@@ -223,7 +225,6 @@ const NewListingForm = () => {
               checked={allergens.includes("Other")}
               onChange={() => handleAllergenChange("Other")}
             />
-            <label htmlFor="other">Other</label>
 
           </div>
         </div>

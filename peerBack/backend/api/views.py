@@ -199,12 +199,14 @@ class CreateListing(viewsets.ModelViewSet):
 
 
 class ListingDelete(generics.DestroyAPIView):
+    queryset = Listing.objects.all()
     serializer_class = ListingSerializer
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        user = self.request.user
-        return Listing.objects.filter(user_profile=user)
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 def my_view(request):
     print("Headers:", request.headers)

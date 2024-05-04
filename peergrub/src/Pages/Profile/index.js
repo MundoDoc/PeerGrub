@@ -167,8 +167,18 @@ const fetchUserListings = (userId) => {
     }
 };
 
-  
-  
+const deleteListing = (id) =>{
+
+  api
+      .delete(`/api/listing/delete/${id}/`)
+      .then((res) => {
+        if(res.status === 204) {
+         alert("Listing deleted successfully!");
+         window.location.reload();
+        }
+      })
+      .catch((err) => alert(err));
+}
   
   const toggleEditing = () => {
     setEditing(!editing);
@@ -202,7 +212,7 @@ const fetchUserListings = (userId) => {
       </div>
       <div className="listings">
         {allListings.map((newList) => (
-          <ItemListings newList={newList} key={newList.id} />
+          <ItemListings route="profile" newList={newList} onDelete={deleteListing} key={newList.id} />
         ))}
       </div>
     </div>

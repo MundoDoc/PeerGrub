@@ -20,6 +20,11 @@ input[type="file"] {
   margin-top: 5px;
 }
 
+.allergens{
+  width: 100%;
+  display: flex;
+}
+
 .preview-image {
   max-width: 200px;
   margin-top: 10px;
