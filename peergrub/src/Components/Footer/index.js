@@ -11,21 +11,28 @@ export default function Footer() {
                 <Grid item xs={12}>
                     <Grid container justifyContent="center" spacing={2}>
                         <Grid className="eachBox" item>
-                            <Paper sx={{fontFamily: "Monaco", height: 250, width: "100%", backgroundColor: '#e9e0d4',}}>
-                                <h1 className='paperStyle'>Info</h1>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                            <Paper sx={{borderRadius: "10px", height: 200, width: "100%", backgroundColor: '#fff2e3', border: "1px solid #ddd", boxShadow: "rgba(0, 0, 0, 0.1) 5px 10px 20px;"}}>
+                                <h1 className='paperStyle'>Only At</h1>
+                                <p>California State University, Dominguez Hills</p>
+                                <p>1000 E. Victoria Street</p>
+                                <p>Carson, CA 90747</p>
+                                <p>310-243-3696</p>
                             </Paper>
                         </Grid>
                         <Grid className="eachBox" item>
-                            <Paper sx={{fontFamily: "Monaco", height: 250, width: "100%", backgroundColor: '#e9e0d4',}}>
+                            <Paper sx={{borderRadius: "10px", height: 200, width: "100%", backgroundColor: '#fff2e3', border: "1px solid #ddd", boxShadow: "rgba(0, 0, 0, 0.1) 5px 10px 20px;"}}>
                                 <h1 className='paperStyle'>About Us</h1>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                             </Paper>
                         </Grid>
                         <Grid className="eachBox" item>
-                            <Paper sx={{fontFamily: "Monaco", height: 250, width: "100%", backgroundColor: '#e9e0d4',}}>
+                            <Paper sx={{borderRadius: "10px", height: 200, width: "100%", backgroundColor: '#fff2e3', border: "1px solid #ddd", boxShadow: "rgba(0, 0, 0, 0.1) 5px 10px 20px;"}}>
                                 <h1 className='paperStyle'>Social Media</h1>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                <p style={{textDecoration: "underline"}}>Facebook</p>
+                                <p style={{textDecoration: "underline"}}>X (formally Twitter)</p>
+                                <p style={{textDecoration: "underline"}}>Instagram</p>
+                                <p style={{textDecoration: "underline"}}>LinkedIn</p>
+
                             </Paper>
                         </Grid>
                     </Grid>

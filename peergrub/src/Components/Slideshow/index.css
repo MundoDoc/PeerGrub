@@ -12,7 +12,8 @@
 .slide {
   flex: 1 0 30%; /* Adjust based on your layout preference */
   opacity: 0.9; /* Dim side images slightly */
-  transition: transform 0.5s ease, opacity 0.5s ease; /* Smooth transition for transform and opacity */
+  transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.5s ease; /* Smooth transition for transform and opacity */
+  box-shadow: rgba(0, 0, 0, 0.2) 10px 10px 30px;
   background-color: white;
   padding-bottom: 20px;
   border: 12px solid white;
@@ -36,7 +37,8 @@
 }
 
 .slide:hover {
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  /* box-shadow: 0 10px 20px rgba(0,0,0,0.3); */
+  box-shadow: rgba(0, 0, 0, 0.1) 10px 10px 50px;
   opacity: 1;
   transform: scale(1.1); /* Slightly scale up on hover */
 }
