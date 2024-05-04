@@ -185,6 +185,16 @@ class CreateListing(viewsets.ModelViewSet):
         if self.action in ['update', 'partial_update', 'destroy']:
             return [permissions.IsAuthenticated(), IsAuthorOrReadOnly()]
         return super().get_permissions()
+    
+    def get_queryset(self):
+        """
+        Optionally restricts the returned listings to a given user,
+        by filtering against a `user_id` query parameter in the URL.
+        """
+        user_id = self.request.query_params.get('user_id', None)
+        if user_id is not None:  # Corrected from `not null` to `not None`
+            return Listing.objects.filter(user_profile=user_id)
+        return super().get_queryset()
 
 
 

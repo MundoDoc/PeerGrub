@@ -11,7 +11,7 @@ const Profile = () => {
   const [allListings, setAllListings] = useState([]);
   const [name, setName] = useState("");
   const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState(""); // Assuming you want to separately handle last name
+  const [lastName, setLastName] = useState("");
   const [bio, setBio] = useState("");
   const [description, setDescription] = useState("");
   const [picture, setPicture] = useState(StockImage);
@@ -55,19 +55,31 @@ const Profile = () => {
         setDescription(res.data.results[0].sub_description);
         setPicture(res.data.results[0].profile_image || StockImage);
         setUserID(res.data.results[0].id);
+
+        // Fetch listings specific to this user
+        fetchUserListings(res.data.results[0].user_profile);
       }
     })
-
-    api 
-      .get("/api/listing/")
-      .then((res) => res.data)
-      .then((data) => {
-          setAllListings(data.results);
-          console.log(data.results);
-        })
-      .catch((err) => alert(err));
-
+    .catch((err) => {
+        console.error("Error fetching profile:", err);
+        alert('Error fetching profile data.');
+    });
 };
+
+const fetchUserListings = (userId) => {
+    api.get(`/api/listing/?user_id=${userId}`)
+    .then((res) => {
+      if (res.status === 200 && res.data) {
+        console.log('User Listings:', res.data);
+        setAllListings(res.data.results);  // Assuming the data comes in an array
+      }
+    })
+    .catch((err) => {
+        console.error("Error fetching user listings:", err);
+        alert('Error fetching user listings.');
+    });
+};
+
 
 
   
@@ -110,9 +122,11 @@ const Profile = () => {
     formData.append("last_name", lastName);
     formData.append("description", bio);
     formData.append("sub_description", description);
-    // Only append the profile_image if a new file has been selected
-    if (file !== StockImage && file) {
+
+    // Append the profile_image only if a new file has been selected and it's not been used already
+    if (file && file !== StockImage) {
       formData.append("profile_image", file);
+      setFile(null); // Immediately reset file state to prevent reuse
     }
   
     const accessToken = localStorage.getItem(ACCESS_TOKEN);
@@ -124,29 +138,35 @@ const Profile = () => {
   
     const csrfToken = Cookies.get('csrftoken');
     try {
-      console.log(userID)
       const response = await fetch(`http://localhost:8000/api/profile/${userID}/`, {
         method: 'PATCH',
         body: formData,
         headers: {
-          'Authorization': `Bearer ${accessToken}`, // Include bearer token
+          'Authorization': `Bearer ${accessToken}`,
           'X-CSRFToken': csrfToken
         },
         credentials: 'include'
       });
   
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(`Failed to save profile: ${errorData}`);
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            const errorData = await response.json();
+            alert(`Failed to save profile: ${JSON.stringify(errorData)}`);
+        } else {
+            const errorText = await response.text();
+            alert(`Failed to save profile: ${errorText}`);
+        }
+      } else {
+        alert('Profile saved successfully!');
+        setEditing(false); // Disable editing mode after save
       }
-      alert('Profile saved successfully!');
-      setEditing(false); // Disable editing mode after save
     } catch (error) {
       console.error('Error saving profile:', error);
       alert('Error saving profile: ' + error.message);
     }
-    setEditing(false);
-  };
+};
+
   
   
   

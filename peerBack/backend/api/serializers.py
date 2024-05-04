@@ -24,7 +24,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         }
     
     def validate_profile_image(self, value):
-        if value.size > 1024 * 1024 * 2:  # limits the uploaded image size to 2MB
+        if value.size > 1024 * 1024 * 30:  # limits the uploaded image size to 2MB
             raise serializers.ValidationError("Image file too large ( > 2mb )")
         return value
         
@@ -63,6 +63,3 @@ class ListingSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # You can remove any reference to user_profile here
         return super().create(validated_data)
-
-
-
