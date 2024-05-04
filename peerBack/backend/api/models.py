@@ -29,7 +29,7 @@ class Listing(models.Model):
     user_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='listing', default=10)
     Listing_Title = models.CharField(max_length=40)
     Listing_Image = models.ImageField(upload_to='Listing_Image/', blank=True, null=True)
-    Listing_Cost = models.FloatField(blank=True)
+    Listing_Cost = models.DecimalField(decimal_places=2,max_digits=4)
     Listing_Descr = models.TextField(max_length=200, default="Come try our delicious food!")
     Listing_Ingredients = models.TextField(max_length=200, null=True)
 
