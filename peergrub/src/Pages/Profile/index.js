@@ -182,12 +182,6 @@ const fetchUserListings = (userId) => {
   return (
     <div className="profile">
       <div className="profile-header">
-        <div className="edit-button-container">
-          {editing && <button className="edit-button" onClick={handleSaveProfile}>Save</button>}
-          {!editing && <button className="edit-button" onClick={toggleEditing}>Edit</button>}
-          <button className="add-dish-button" onClick={handleNav}>Create Listing</button>
-          <button className="add-dish-button" onClick={logMeOut}>Logout</button>
-        </div>
         <div className="profile-info">
           <div className="profile-picture">
             <img src={picture} alt="Profile" />
@@ -198,6 +192,12 @@ const fetchUserListings = (userId) => {
             {editing ? <textarea name="bio" value={bio} onChange={handleInputChange} /> : <p className="profile-bio">{bio}</p>}
             {editing ? <input name="description" type="text" value={description} onChange={handleInputChange} /> : <p className="contact">{description}</p>}
           </div>
+        </div>
+        <div className="edit-button-container">
+          {editing && <button className="edit-button" onClick={handleSaveProfile}>Save</button>}
+          {!editing && <button className="edit-button" onClick={toggleEditing}>Edit</button>}
+          <button className="add-dish-button" onClick={handleNav}>Create Listing</button>
+          <button className="add-dish-button" onClick={logMeOut}>Logout</button>
         </div>
       </div>
       <div className="listings">
