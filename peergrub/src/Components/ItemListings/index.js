@@ -10,12 +10,14 @@ export default function ItemListings({ route, newList, onDelete }) {
         <div className="item-details">
           <h2>{newList.Listing_Title}</h2>
           <p>{newList.Listing_Descr}</p>
-          <p className="price">${newList.Listing_Cost}</p>
-          {route === "profile" && (
-            <button className="delete" onClick={() => onDelete(newList.id)}>
-              Delete
-            </button>
-          )}
+          <div className="space">
+            <p className="price">${newList.Listing_Cost}</p>
+            {route === "profile" && (
+              <button className="delete" onClick={() => onDelete(newList.id)}>
+                Delete
+              </button>
+            )}
+          </div>
         </div>
       </div>
   );

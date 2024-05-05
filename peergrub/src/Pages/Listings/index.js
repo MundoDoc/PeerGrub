@@ -88,10 +88,6 @@ export default function Listings() {
     setSelectedItem(item);
   };
 
-  const closeDetailsPopup = () => {
-    setSelectedItem(null);
-  };
-
   return (
     <div className="listing-page">
       <div className="title" style={{ textAlign: "center" }}>
@@ -114,9 +110,8 @@ export default function Listings() {
             <div className="inner-popup">
               <h2>{selectedItem.Listing_Title}</h2>
               <p>Details: {selectedItem.Listing_Descr}</p>
-              <p>Made by: {selectedItem.madeBy}</p>
-              <button onClick={() => addToCart(selectedItem)}>Add to Cart</button>
-              <button onClick={closeDetailsPopup}>Close</button>
+              <p>Sold by: {selectedItem.Listing_Author}</p>
+              <button className="listButton" onClick={() => addToCart(selectedItem)}>Add to Cart</button>
             </div>
           </div>
         </div>

@@ -9,6 +9,25 @@
   gap: 20px;
 }
 
+.delete {
+  padding: 5px 10px;
+  font-size: 1rem;
+  background-color: #e94a23;
+  background-image: linear-gradient(1deg, #aa381b00, #e6d1494d 99%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.delete:hover {
+  background-color: #aa381b;
+}
+
+.space{
+  display: flex;
+}
+
 .item {
   /* flex-basis: calc(33.33% - 20px); */
   /* flex: 0 0 calc(33.33% - 20px); */
@@ -51,6 +70,7 @@
 }
 
 .price {
+  padding-right: 20px;
   font-size: large;
   font-weight: bold;
   color: #e94a23;

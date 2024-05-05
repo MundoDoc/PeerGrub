@@ -9,28 +9,40 @@ const NewListingForm = () => {
   const [image, setImage] = useState(null);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
-  const [tags, setTags] = useState("Food");
   const [cost, setCost] = useState("");
   const [description, setDescription] = useState("");
   const [ingredients, setIngredients] = useState("");
-  const [allergens, setAllergens] = useState([]);
+  const [author, setAuthor] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:8000/set-csrf-cookie/', {
-      credentials: 'include'
-      })
-      .then(response => response.json())
-      .then(() => console.log('CSRF cookie set'))
-      .catch(error => console.error('Error setting CSRF cookie:', error));
-  })
+    const fetchData = async () => {
+      try {
+        await fetch('http://localhost:8000/set-csrf-cookie/', {
+          credentials: 'include'
+        });
+        console.log('CSRF cookie set');
+  
+        const response = await api.get('/api/profile/', {
+          headers: {
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+        });
+  
+        if (response.status === 200 && response.data) {
+          setAuthor(`${response.data.results[0].first_name} ${response.data.results[0].last_name}`);
+        }
+      } catch (error) {
+        console.error('Error setting CSRF cookie or fetching profile:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
-  };
-
-  const handleTagsChange = (event) => {
-    setTags(event.target.value);
   };
 
   const handleCostChange = (event) => {
@@ -43,14 +55,6 @@ const NewListingForm = () => {
 
   const handleIngredientsChange = (event) => {
     setIngredients(event.target.value);
-  };
-
-  const handleAllergenChange = (allergen) => {
-    if (allergens.includes(allergen)) {
-      setAllergens(allergens.filter((a) => a !== allergen));
-    } else {
-      setAllergens([...allergens, allergen]);
-    }
   };
 
   const handleImageInput = (event) => {
@@ -90,6 +94,7 @@ const NewListingForm = () => {
       formData.append("Listing_Cost", cost);
       formData.append("Listing_Descr", description);
       formData.append("Listing_Ingredients", ingredients);
+      formData.append("Listing_Author", author)
   
       const response = await api.post("/api/listing/", formData, { headers });
       if (response.status >= 200 && response.status < 300) {
@@ -131,15 +136,6 @@ const NewListingForm = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="tags">Tags:</label>
-          <input
-            type="text"
-            id="tags"
-            value={tags}
-            onChange={handleTagsChange}
-          />
-        </div>
-        <div className="form-group">
           <label htmlFor="cost">*Cost:</label>
           <input
             type="text"
@@ -166,67 +162,6 @@ const NewListingForm = () => {
             onChange={handleIngredientsChange}
             required
           ></textarea>
-        </div>
-        <div className="form-group allergens">
-          <label>Allergens:</label>
-          <div className="allergen-options">
-            <label htmlFor="nuts">Nuts</label>
-            <input
-              type="checkbox"
-              id="nuts"
-              value="Nuts"
-              checked={allergens.includes("Nuts")}
-              onChange={() => handleAllergenChange("Nuts")}
-            />
-
-            <label htmlFor="dairy">Dairy</label>
-            <input
-              type="checkbox"
-              id="dairy"
-              value="Dairy"
-              checked={allergens.includes("Dairy")}
-              onChange={() => handleAllergenChange("Dairy")}
-            />
-
-            <label htmlFor="eggs">Eggs</label>
-            <input
-              type="checkbox"
-              id="eggs"
-              value="Eggs"
-              checked={allergens.includes("Eggs")}
-              onChange={() => handleAllergenChange("Eggs")}
-            />
-            
-            <label htmlFor="gluten">Gluten</label>
-            <input
-              type="checkbox"
-              id="gluten"
-              value="Gluten"
-              checked={allergens.includes("Gluten")}
-              onChange={() => handleAllergenChange("Gluten")}
-            />
-
-            <label htmlFor="soy">Soy</label>
-            <input
-              type="checkbox"
-              id="soy"
-              value="Soy"
-              checked={allergens.includes("Soy")}
-              onChange={() => handleAllergenChange("Soy")}
-            />
-
-
-            {/* Add more allergen checkboxes */}
-            <label htmlFor="other">Other</label>
-            <input
-              type="checkbox"
-              id="other"
-              value="Other"
-              checked={allergens.includes("Other")}
-              onChange={() => handleAllergenChange("Other")}
-            />
-
-          </div>
         </div>
         <button type="submit">Create Listing</button>
       </form>

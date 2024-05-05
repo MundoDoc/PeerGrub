@@ -32,6 +32,7 @@ class Listing(models.Model):
     Listing_Cost = models.DecimalField(decimal_places=2,max_digits=4)
     Listing_Descr = models.TextField(max_length=200, default="Come try our delicious food!")
     Listing_Ingredients = models.TextField(max_length=200, null=True)
+    Listing_Author = models.CharField(max_length=100)
 
     class Meta:
         verbose_name = "Listing Creation"
