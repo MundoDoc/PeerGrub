@@ -3,24 +3,40 @@
     height: auto;
     max-width: 70%;
     border-radius: 50%;
-    border: 5px solid white;
+    /* border: 5px solid white;
     border-top-width: 0px;
     border-bottom-width: 0px;
     border-left-width: 0px;
-    border-right-width: 15px;
+    border-right-width: 15px; */
+    box-shadow: rgba(0, 0, 0, 0.2) 10px 10px 30px;
 }
 
 .gridStyle{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-family: 'Courier New', monospace;
-    font-weight: 700;
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
+    text-align: left;
+    /* font-family: 'Courier New', monospace; */
+    /* font-weight: 100px; */
     height: 100%;
     padding-top: 10px;
-    border: 10px solid white;
-    background-color: white;
+    border: 10px solid rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255);
+}
+
+
+.articleDate {
+    font-weight: 100;
+    margin-bottom: 15px;
+}
+
+.articleContent {
+    text-indent: 50px;
+    font-weight: 100;
+}
+
+.spotLink{
+    color: #860038;
 }
 
 .spotlightDiv{

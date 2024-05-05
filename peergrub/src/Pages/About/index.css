@@ -13,14 +13,14 @@
 .info-box {
     flex: 0 0 30%; /* Adjust the width as needed */
     padding: 20px;
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
     border-radius: 10px;
     box-sizing: border-box;
     display: flex; /* Ensure the box content is flex items */
     flex-direction: column; /* Align content vertically */
     justify-content: center; /* Center content vertically */
     align-items: center; /* Center content horizontally */
-    background-color: white;
+    /* background-color: white; */
     box-shadow: rgba(0, 0, 0, 0.2) 10px 10px 30px;
 }
 

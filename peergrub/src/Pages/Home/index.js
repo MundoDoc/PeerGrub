@@ -13,10 +13,7 @@ export default function Home(){
         <h1 className='imageText'>Welcome to the Foodie App, foodies</h1>
       </div>
       <Slideshow />
-      <div className='spotLight'>
-        <h1 className='spotlightText'>Spotlight</h1>
-        <SpotLight />
-      </div>
+      <SpotLight />
     </div>
   );
 }
