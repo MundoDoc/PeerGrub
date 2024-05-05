@@ -15,6 +15,20 @@
     margin-right: auto;
 }
 
+.header{
+    font-family: cursive;
+    padding-top: 20px;
+    color:black;
+    text-align: center;
+}
+
+.listText{
+    display: flex;
+    top: 0;
+    text-align: center;
+    color: maroon;
+}
+
 .imgDiv{
     border-radius: 40px;
 }
