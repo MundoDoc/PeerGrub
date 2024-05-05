@@ -45,9 +45,7 @@ const Profile = () => {
       },
     })
     .then((res) => {
-      console.log(res);
       if (res.status === 200 && res.data) {
-        console.log('Profile Data:', res.data);  // Directly use res.data
         setName(`${res.data.results[0].first_name} ${res.data.results[0].last_name}`);
         setFirstName(res.data.results[0].first_name);
         setLastName(res.data.results[0].last_name);
@@ -70,7 +68,6 @@ const fetchUserListings = (userId) => {
     api.get(`/api/listing/?user_id=${userId}`)
     .then((res) => {
       if (res.status === 200 && res.data) {
-        console.log('User Listings:', res.data);
         setAllListings(res.data.results);  // Assuming the data comes in an array
       }
     })
@@ -103,7 +100,6 @@ const fetchUserListings = (userId) => {
   }
 
   const handleFileChange = (event) => {
-    console.log(event)
     const newFile = event.target.files[0];
     setFile(newFile);
     if (newFile) {

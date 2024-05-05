@@ -62,7 +62,6 @@ export default function AuthForm({ route, method }) {
         if (userRes.status === 201 || userRes.status === 200) {
           localStorage.setItem(ACCESS_TOKEN, tokenRes.data.access);
           localStorage.setItem(REFRESH_TOKEN, tokenRes.data.refresh);
-          localStorage.setItem("ShoppingCart", null);
           const profileRes = await api.post("/api/profile/", { first_name: firstName, last_name: lastName });
           console.log(profileRes)
           if (profileRes.status > 200 && profileRes.status < 300) {
@@ -88,7 +87,6 @@ export default function AuthForm({ route, method }) {
         const res = await api.post("/api/token/", { username, password });
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-        localStorage.setItem("ShoppingCart", null);
         navigate("/");
         window.location.reload();
       } catch (error) {

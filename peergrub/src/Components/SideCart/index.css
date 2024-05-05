@@ -7,7 +7,7 @@
     display: flex;
     justify-content: center;
     text-align: center !important;
-    color: black;
+    color: maroon;
     text-decoration: none;
     padding: 5px;
     border-radius: 15px;
@@ -15,13 +15,29 @@
     margin-right: auto;
 }
 
+.imgDiv{
+    border-radius: 40px;
+}
+
 .sideBox{
     height: 100%;
     color: white;
-    background-color: maroon;
+    background-color: white;
 }
 
 .nav-side{
     color: #36454f;
     text-decoration: none;
+}
+
+.eachItemList{
+    background-color: white;
+    color: maroon;
+    gap: 20px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) 10px 10px 30px;
+}
+
+.eachItem{
+    padding-top: 10px;
 }

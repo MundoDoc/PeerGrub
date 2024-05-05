@@ -8,17 +8,17 @@ import { Tabs, Tab } from '@mui/material';
 
 function Navigation() {
     const [isCollapsed, setIsCollapsed] = useState(true);
-    const [value, setValue] = useState(null);
+    const [value, setValue] = useState(0);
     let navigate = useNavigate();
     const location = useLocation();
     
     const stopTab = () => {
-        setValue(null);
+        setValue(0);
     }
 
     useEffect(() => {
         if(location.pathname == "/"){
-            setValue(null);
+            setValue(0);
             handleChange();
         }
         console.log(location.pathname)
@@ -28,12 +28,15 @@ function Navigation() {
         setValue(newValue);
         switch (newValue) {
             case 0:
-                navigate('/listings');
+                navigate('/');
                 break;
             case 1:
-                navigate('/about');
+                navigate('/listings');
                 break;
             case 2:
+                navigate('/about');
+                break;
+            case 3:
                 if(localStorage.getItem('access')===null){
                     navigate('/login');
                 }else{
@@ -61,6 +64,7 @@ function Navigation() {
                             {/* Collapsible items */}
                             <div className={`collapse-content ${isCollapsed ? 'hide' : 'show'}`}>
                                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                                    <Tab className="disappear" label="Home" />
                                     <Tab label="Listings" />
                                     <Tab label="About" />
                                     {localStorage.getItem('access') === null && (

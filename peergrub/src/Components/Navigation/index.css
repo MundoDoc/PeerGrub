@@ -17,6 +17,10 @@
     color: #36454f;
 }
 
+.disappear{
+    visibility: hidden;
+}
+
 .navbar-toggler {
     display: none; /* Initially hidden */
     cursor: pointer;
