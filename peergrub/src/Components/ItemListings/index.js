@@ -4,7 +4,6 @@ import Muffins from "../../Assets/Muffins.png";
 
 export default function ItemListings({ route, newList, onDelete }) {
 
-
   return (
       <div className="item">
         <img src={newList.Listing_Image} alt="Placeholder" />
