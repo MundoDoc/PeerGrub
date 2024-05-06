@@ -1,0 +1,52 @@
+.header{
+    text-align: center;
+}
+
+.empty{
+    text-align: center;
+}
+
+.shopping-cart{
+}
+
+.eachItem{
+    width: 100%;
+    padding:10px;
+    max-width: 500px;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.eachItemList{
+    padding: 10px;
+}
+
+.firstSide {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Align items to the bottom (right) of the container */
+    align-items: flex-end; /* Align items to the end of the cross axis (right) */
+    width: 60vw;
+  }
+
+.secondSide{
+    padding-left: 20px;
+}
+
+.imgDiv{
+    border-radius: 100px;
+    height: 120px;
+    width: 130px;
+}
+
+.wrapper{
+    display: flex;
+    width: 100%;
+}
+
+.checkOut{
+    width: 30vw;
+    text-align: center;
+}

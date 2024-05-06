@@ -77,22 +77,27 @@ export default function SideCart() {
   const DrawerList = (
     <Box className="sideBox" sx={{ width: 400 }} role="presentation" onClick={toggleDrawer(false)}>
       <h1 className='header'>Cart</h1>
-      <List>
-        {cartItems.map((item) => (
-          <div className='eachItem'>
-            <ListItem className="eachItemList" key={item.id} disablePadding>
-              <ListItemIcon>
-                <img className='imgDiv' src={item.Listing_Image} alt={item.Listing_Title} style={{width: '80px', height:'80px'}}/>
-              </ListItemIcon>
-              <ListItemText primary={item.Listing_Title} secondary={`Quantity: ${item.quantity}`} />
-              <IconButton onClick={() => addToCart(item)}><AddCircleOutlineIcon /></IconButton>
-              <IconButton onClick={() => removeFromCart(item.id)}><RemoveCircleOutlineIcon /></IconButton>
-              <IconButton onClick={() => deleteFromCart(item.id)}><DeleteIcon /></IconButton>
-            </ListItem>
-          </div>
-        ))}
-      </List>
-      <Divider />
+      {cartItems.length === 0 ? (
+        <div className="empty">
+          Your cart is empty
+        </div>
+      ) : (
+        <List>
+          {cartItems.map((item) => (
+            <div className='eachItem'>
+              <ListItem className="eachItemList" key={item.id} disablePadding>
+                <ListItemIcon>
+                  <img className='imgDiv' src={item.Listing_Image} alt={item.Listing_Title} style={{width: '80px', height:'80px'}}/>
+                </ListItemIcon>
+                <ListItemText primary={item.Listing_Title} secondary={`Quantity: ${item.quantity}`} />
+                <IconButton onClick={() => addToCart(item)}><AddCircleOutlineIcon /></IconButton>
+                <IconButton onClick={() => removeFromCart(item.id)}><RemoveCircleOutlineIcon /></IconButton>
+                <IconButton onClick={() => deleteFromCart(item.id)}><DeleteIcon /></IconButton>
+              </ListItem>
+            </div>
+          ))}
+        </List>
+      )}
       <a className="cartPage" href="/shoppingcart">Go to Shopping Cart</a>
     </Box>
   );

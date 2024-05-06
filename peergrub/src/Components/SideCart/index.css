@@ -33,6 +33,10 @@
     border-radius: 40px;
 }
 
+.empty{
+    color: black;
+}
+
 .sideBox{
     height: 100%;
     color: white;
@@ -47,11 +51,10 @@
 .eachItemList{
     background-color: white;
     color: maroon;
-    gap: 20px;
+    gap: 10px;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.2) 10px 10px 30px;
 }
 
 .eachItem{
-    padding-top: 10px;
 }
