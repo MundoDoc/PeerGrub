@@ -19,6 +19,14 @@
     margin: 5px 10px;
 }
 
+.socialIcons {
+    margin: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
 @media (max-width: 768px) {
 
     .eachBox{
