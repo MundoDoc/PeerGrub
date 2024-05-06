@@ -5,16 +5,23 @@ import Logo from '../../Assets/Logo.png';
 import SideCart from '../SideCart';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Tabs, Tab } from '@mui/material';
+import ImagePopup from '../ImagePopup';
+import SchoolMap from "../../Assets/SchoolMap.png"
 
 function Navigation() {
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [value, setValue] = useState(0);
+    const [showPopup, setShowPopup] = useState(false);
     let navigate = useNavigate();
     const location = useLocation();
     
     const stopTab = () => {
         setValue(0);
     }
+
+    const closePopup = () => setShowPopup(false);
+
+    const showImagePopup = () => setShowPopup(true);
 
     useEffect(() => {
         if(location.pathname == "/"){
@@ -64,7 +71,7 @@ function Navigation() {
                             {/* Collapsible items */}
                             <div className={`collapse-content ${isCollapsed ? 'hide' : 'show'}`}>
                                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                                    <Tab className="disappear" label="Home" />
+                                    <Tab label="Map" onClick={showImagePopup}/>
                                     <Tab label="Listings" />
                                     <Tab label="About" />
                                     {localStorage.getItem('access') === null && (
@@ -111,6 +118,7 @@ function Navigation() {
                 </ul>
             </div>
             <div className={`opacBack ${isCollapsed ? 'hide' : 'show'}`} onClick={() =>{ setIsCollapsed(true) }}></div>
+            {showPopup && <ImagePopup imageUrl={SchoolMap} onClose={closePopup} />}
         </div>
     );
 }

@@ -30,7 +30,7 @@
     left: 50%; /* Positions the left of h1 halfway across the parent container */
     transform: translate(-50%, -50%); /* Adjusts the position of h1 to be centered over the image */
     color: white; /* Adjust the color as needed */
-    z-index: 100;
+    z-index: 10;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); 
   
     font-family: "Monaco";
