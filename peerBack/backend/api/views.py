@@ -176,14 +176,14 @@ class IsAuthorOrReadOnly(permissions.BasePermission):
 class CreateListing(viewsets.ModelViewSet):
     queryset = Listing.objects.all()
     serializer_class = ListingSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(user_profile=self.request.user)
 
     def get_permissions(self):
         if self.action in ['update', 'partial_update', 'destroy']:
-            return [permissions.IsAuthenticated(), IsAuthorOrReadOnly()]
+            return [permissions.IsAuthenticated()]
         return super().get_permissions()
     
     def get_queryset(self):

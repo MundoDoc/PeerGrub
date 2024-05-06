@@ -10,6 +10,9 @@ export default function ItemListings({ route, newList, onDelete }) {
         <div className="item-details">
           <h2>{newList.Listing_Title}</h2>
           <p>{newList.Listing_Descr}</p>
+          {route === "profile" && (
+              <p>Purchased: {newList.Listing_Purchased}</p>
+            )}
           <div className="space">
             <p className="price">${newList.Listing_Cost}</p>
             {route === "profile" && (

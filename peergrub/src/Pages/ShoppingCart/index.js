@@ -11,6 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { ACCESS_TOKEN } from "../../constants";
+import Cookies from 'js-cookie';
 
 function ShoppingCart() {
   const [cartItems, setCartItems] = useState([]);
@@ -37,6 +38,36 @@ function ShoppingCart() {
     }
   };
 
+  const handleCheckOut = async (event) => {
+    event.preventDefault();
+  
+    const accessToken = localStorage.getItem(ACCESS_TOKEN);
+
+    for (const item of cartItems) {
+      let newQuantity = item.quantity + Number(item.Listing_Purchased);
+      console.log(newQuantity);
+      const formData = new FormData();
+      formData.append('Listing_Purchased', newQuantity);
+      const csrfToken = Cookies.get('csrftoken');
+      try {
+        const response = await fetch(`http://localhost:8000/api/listing/${item.id}/`, {
+          method: 'PATCH',
+          body: formData,
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'X-CSRFToken': csrfToken
+          },
+          credentials: 'include'
+        });
+      } catch {
+        console.log("Error updating Lists.");
+      }
+    }
+    localStorage.removeItem('cartItems');
+    alert("Successfully Checked out");
+  };
+  
+
   const removeFromCart = (id) => {
     const updatedItems = cartItems.reduce((result, item) => {
       if (item.id === id) {
@@ -62,6 +93,7 @@ function ShoppingCart() {
     if (storedCartItems) {
       setCartItems(JSON.parse(storedCartItems));
     }
+    console.log(storedCartItems)
   };
 
   const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
@@ -108,6 +140,7 @@ const totalCost = cartItems.reduce((total, item) => {
                 <h1 className='checkOut'>Order</h1>
                 <h4>Total items: {totalItems}</h4>
                 <h4>Total cost: ${totalCost.toFixed(2)}</h4>
+                <button className="checkOutButton" onClick={handleCheckOut}>Check Out</button>
             </div>
         </div>
       )}

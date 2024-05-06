@@ -63,3 +63,20 @@ class ListingSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # You can remove any reference to user_profile here
         return super().create(validated_data)
+    
+    def update(self, instance, validated_data):
+        instance.Listing_Title = validated_data.get('Listing_Title', instance.Listing_Title)
+        instance.Listing_Cost = validated_data.get('Listing_Cost', instance.Listing_Cost)
+        instance.Listing_Descr = validated_data.get('Listing_Descr', instance.Listing_Descr)
+        instance.Listing_Ingredients = validated_data.get('Listing_Ingredients', instance.Listing_Ingredients)
+        instance.Listing_Author = validated_data.get('Listing_Author', instance.Listing_Author)
+        instance.Listing_Purchased = validated_data.get('Listing_Purchased', instance.Listing_Purchased)
+        instance.Listing_Area = validated_data.get('Listing_Area', instance.Listing_Area)
+
+        if 'Listing_Image' in validated_data:
+            Listing_Image = validated_data['Listing_Image']
+            if Listing_Image:  # Check if a new file has been provided
+                instance.Listing_Image.save(Listing_Image.name, Listing_Image, save=False)
+
+        instance.save()
+        return instance

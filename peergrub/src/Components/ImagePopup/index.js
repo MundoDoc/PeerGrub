@@ -4,8 +4,8 @@ import './index.css'; // Add styles for the popup
 
 function ImagePopup({ imageUrl, onClose }) {
   return (
-    <div className="image-popup" onClick={onClose}>
-      <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+    <div className="image-pop" onClick={onClose}>
+      <div className="pop-content" onClick={(e) => e.stopPropagation()}>
         <img src={imageUrl} alt="Popup Image" />
       </div>
     </div>
