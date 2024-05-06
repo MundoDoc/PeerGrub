@@ -13,6 +13,7 @@ const NewListingForm = () => {
   const [description, setDescription] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [author, setAuthor] = useState("");
+  const [areaID, setAreaID] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,7 +40,10 @@ const NewListingForm = () => {
   
     fetchData();
   }, []);
-  
+
+  const handleAreaChange = (event) => {
+    setAreaID(event.target.value);
+  };
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -75,6 +79,10 @@ const NewListingForm = () => {
       alert("Please fill out all required fields");
       return;
     }
+    if(areaID < 1 || areaID > 8) {
+      alert("Please select a valid area");
+      return;
+    }
   
     try {
       const token = localStorage.getItem(ACCESS_TOKEN); // Assuming you're storing the token in localStorage
@@ -95,6 +103,7 @@ const NewListingForm = () => {
       formData.append("Listing_Descr", description);
       formData.append("Listing_Ingredients", ingredients);
       formData.append("Listing_Author", author)
+      formData.append("Listing_Area", areaID);
   
       const response = await api.post("/api/listing/", formData, { headers });
       if (response.status >= 200 && response.status < 300) {
@@ -162,6 +171,16 @@ const NewListingForm = () => {
             onChange={handleIngredientsChange}
             required
           ></textarea>
+        </div>
+        <div className="form-group">
+          <label htmlFor="area">*Area #(Using Map):</label>
+          <input
+            type="text"
+            id="areaID"
+            value={areaID}
+            onChange={handleAreaChange}
+            required
+          />
         </div>
         <button type="submit">Create Listing</button>
       </form>

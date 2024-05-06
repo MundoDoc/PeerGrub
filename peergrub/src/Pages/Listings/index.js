@@ -111,6 +111,7 @@ export default function Listings() {
               <h2>{selectedItem.Listing_Title}</h2>
               <p>Details: {selectedItem.Listing_Descr}</p>
               <p>Sold by: {selectedItem.Listing_Author}</p>
+              <p>Map Meeting Area: {selectedItem.Listing_Area}</p>
               <button className="listButton" onClick={() => addToCart(selectedItem)}>Add to Cart</button>
             </div>
           </div>
